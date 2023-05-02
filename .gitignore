@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# local tests
+_test/
+
+# .vscode
+.vscode/
