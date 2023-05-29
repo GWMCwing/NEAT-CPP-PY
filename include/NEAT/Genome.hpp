@@ -10,11 +10,11 @@ namespace NEAT {
     template <typename dType = float, typename T2 = int>
     class Genome final {
     public:
-        virtual Genome();
+        Genome();
         virtual ~Genome();
         // 
-        const std::map<const T2, const Node<dType, T2>* const> getNodes() const;
-        const std::map<const T2, const Edge<dType, T2>* const> getEdges() const;
+        const std::map< T2, Node<dType, T2>* >& getNodes() const;
+        const std::map< T2, Edge<dType, T2>* >& getEdges() const;
         Edge<dType, T2>* getEdge(T2 innovationNumber) const;
         Node<dType, T2>* getNode(T2 id) const;
         // 

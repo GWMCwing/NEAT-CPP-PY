@@ -7,6 +7,10 @@
 
 namespace NEAT {
 
+    // forward declaration
+    template <typename dType, typename T2>
+    class Node;
+
     enum class EdgeState {
         ID_ENABLED,
         POINTER_ENABLED,
@@ -27,6 +31,7 @@ namespace NEAT {
         void updateFromTo(Node<dType, T2>* from, Node<dType, T2>* to);
         void updateFromTo(T2 from_id, T2 to_id);
         const EdgeState& getState() const;
+        const T2& getInnovationNumber() const;
 
     private:
         const T2 INNOVATION_NUMBER;

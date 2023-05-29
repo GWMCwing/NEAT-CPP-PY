@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../include/NEAT/Genome.hpp"
 
 namespace NEAT {
@@ -7,21 +8,21 @@ namespace NEAT {
 
     template <typename dType, typename T2>
     Genome<dType, T2>::~Genome() {
-        for (Node<dType, T2>* node : nodes) {
-            delete node;
+        for (std::pair<const T2, NEAT::Node<dType, T2>*> pair : nodes) {
+            delete pair.second;
         }
-        for (Edge<dType, T2>* edge : edges) {
-            delete edge;
+        for (std::pair<const T2, Edge<dType, T2>*> pair : edges) {
+            delete pair.second;
         }
     }
 
     template <typename dType, typename T2>
-    const std::map<const T2, const Node<dType, T2>* const> Genome<dType, T2>::getNodes() const {
+    const std::map< T2, Node<dType, T2>* >& Genome<dType, T2>::getNodes() const {
         return nodes;
     }
 
     template <typename dType, typename T2>
-    const std::map<const T2, const Edge<dType, T2>* const> Genome<dType, T2>::getEdges() const {
+    const std::map< T2, Edge<dType, T2>* >& Genome<dType, T2>::getEdges() const {
         return edges;
     }
 
@@ -53,12 +54,12 @@ namespace NEAT {
 
     template <typename dType, typename T2>
     void Genome<dType, T2>::addNode(Node<dType, T2>* node) {
-        return nodes.insert(std::pair<T2, Node<dType, T2>*>(node->getId(), node));
+        nodes.insert(std::pair<T2, Node<dType, T2>*>(node->getId(), node));
     }
 
     template <typename dType, typename T2>
     void Genome<dType, T2>::addEdge(Edge<dType, T2>* edge) {
-        return edges.insert(std::pair<T2, Edge<dType, T2>*>(edge->getInnovationNumber(), edge));
+        edges.insert(std::pair<T2, Edge<dType, T2>*>(edge->getInnovationNumber(), edge));
     }
 
     template <typename dType, typename T2>

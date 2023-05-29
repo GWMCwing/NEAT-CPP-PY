@@ -1,9 +1,6 @@
 #ifndef __NEAT_NODE_HPP__
 #define __NEAT_NODE_HPP__
 
-#define PY_SSIZE_T_CLEAN
-#include <Python.h>
-
 #include <vector>
 
 #include "Activation.hpp"
@@ -11,11 +8,16 @@
 
 namespace NEAT {
 
+    // forward declaration
+    template <typename dType, typename T2>
+    class Edge;
+
     enum class NodeType {
         INPUT,
         OUTPUT,
         HIDDEN,
-        BIAS
+        BIAS,
+        UNKNOWN
     };
 
     /**
@@ -29,6 +31,7 @@ namespace NEAT {
         Node();
         Node(dType value, T2 id, NodeType nodeType, int layer, ActivationFunction<dType>* activationFunction);
         Node<dType, T2>* cloneEmptyEdge() const;
+        const T2& getId() const;
 
         // NEAT::Genome will handle all the memory management
     private:
