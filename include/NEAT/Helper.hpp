@@ -5,6 +5,14 @@
 
 namespace NEAT {
 
+    /**
+     * @brief Get a random number from a gaussian distribution
+     *
+     * @tparam dType type of data
+     * @param mean mean of distribution
+     * @param stdDeviation standard deviation of distribution
+     * @return dType random number
+     */
     template<typename dType = float>
     dType gaussianDistribution(dType mean, dType stdDeviation) {
         std::random_device rd;

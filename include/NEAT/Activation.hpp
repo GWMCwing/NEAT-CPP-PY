@@ -6,8 +6,7 @@
 
 namespace NEAT {
 
-    // Hoisting
-
+    // forward declaration
     template <typename dType>
     struct ActivationFunction_Factory;
 
@@ -15,12 +14,22 @@ namespace NEAT {
     template <typename dType = float>
     struct ActivationFunction { };
 
+    /**
+     * @brief Abstract class for all single input activation functions
+     *
+     * @tparam dType data type of the input and output
+     */
     template <typename dType = float>
     struct ActivationFunction_Single : public ActivationFunction<dType> {
     public:
         virtual dType operator()(dType) = 0;
     };
 
+    /**
+     * @brief Abstract class for all multiple input activation functions
+     *
+     * @tparam dType data type of the input and output
+     */
     template <typename dType = float>
     struct ActivationFunction_Multiple : public ActivationFunction<dType> {
     public:
@@ -94,6 +103,12 @@ namespace NEAT {
         Identity& operator=(const Identity&) = delete;
     };
 
+    /**
+     * @brief Factory class for all activation functions
+     *
+     * @tparam dType data type of the input and output
+     */
+
     template <typename dType = float>
     struct ActivationFunction_Factory {
         Sigmoid<dType>* sigmoid = nullptr;
@@ -104,6 +119,12 @@ namespace NEAT {
         bool init = false;
     };
 
+    /**
+     * @brief Get the ActivationFunction Factory object, Singleton pattern
+     *
+     * @tparam dType data type of the input and output
+     * @return ActivationFunction_Factory<dType>* pointer to the factory
+     */
     template <typename dType = float>
     ActivationFunction_Factory<dType>* getActivationFunction_Factory() {
         static ActivationFunction_Factory<dType> factory;
