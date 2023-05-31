@@ -27,10 +27,10 @@ namespace NEAT {
     /**
      * @brief Node class for NEAT
      *
-     * @tparam dType The type of the value of the node, the python interface only allows float and double
+     * @tparam dType The type of the value of the node, the python interface only allows double
      * @tparam T2 The type of the innovation number, the python interface only allows int and long
      */
-    template <typename dType = float, typename T2 = int>
+    template <typename dType = double, typename T2 = int>
     class Node final {
     public:
         /**
@@ -47,19 +47,56 @@ namespace NEAT {
          * @param layer layer of the node
          * @param activationFunction activation function of the node
          */
-        Node(dType value, T2 id, NodeType nodeType, int layer, ActivationFunction<dType>* activationFunction);
-        /**
-         * @brief clone a node with the same value, id, nodeType, layer, and activationFunction, but no edges
-         *
-         * @return Node<dType, T2>* a pointer to the cloned node
-         */
-        Node<dType, T2>* cloneEmptyEdge() const;
+        Node(T2 id, NodeType nodeType, int layer, ActivationFunction<dType>* activationFunction);
+
         /**
          * @brief Get the Id of the node
          *
          * @return const T2&
          */
         const T2& getId() const;
+
+        /**
+         * @brief Get the type of the node
+         *
+         */
+        const NodeType& getType() const;
+
+        /**
+         * @brief Get the Layer of the node
+         *
+         * @return const int&
+         */
+        const int& getLayer() const;
+
+        /**
+         * @brief Set the Layer of the node
+         *
+         * @param layer
+         */
+        void setLayer(int layer);
+
+        /**
+         * @brief Clone this node (deep copy)
+         *
+         * @return Node<dType, T2>* a pointer to the cloned node
+         */
+        Node<dType, T2>* clone() const;
+
+        /**
+         * @brief sort the edges of the node according to the innovation number
+         *
+         */
+        void sortEdges();
+
+        void addIncomingEdge(Edge<dType, T2>* edge);
+        void addIncomingEdge(std::vector<Edge<dType, T2>*> edges);
+        void addOutgoingEdge(Edge<dType, T2>* edge);
+        void addOutgoingEdge(std::vector<Edge<dType, T2>*> edges);
+        void setActivationFunction(ActivationFunction<dType>* activationFunction);
+
+        const std::vector<Edge<dType, T2>*>& getIncomingEdges() const;
+        const std::vector<Edge<dType, T2>*>& getOutgoingEdges() const;
 
         // NEAT::Genome will handle all the memory management
     private:

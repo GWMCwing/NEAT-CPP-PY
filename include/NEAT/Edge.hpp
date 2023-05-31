@@ -3,13 +3,15 @@
 
 #include <vector>
 #include "./Node.hpp"
-
+#include "./Genome.hpp"
 
 namespace NEAT {
 
     // forward declaration
     template <typename dType, typename T2>
     class Node;
+    template <typename dType, typename T2>
+    class Genome;
 
     /**
      * @brief Enum for edge state
@@ -25,10 +27,10 @@ namespace NEAT {
     /**
      * @brief Edge class for NEAT
      *
-     * @tparam dType The type of the value of the node, the python interface only allows float and double
+     * @tparam dType The type of the value of the node, the python interface only allows double
      * @tparam T2 The type of the innovation number, the python interface only allows int and long
      */
-    template <typename dType = float, typename T2 = int>
+    template <typename dType = double, typename T2 = int>
     class Edge final {
     public:
         /**
@@ -39,7 +41,7 @@ namespace NEAT {
          * @param weight weight of the edge
          * @param innovationNumber innovation number of the edge
          */
-        Edge(Node<dType, T2>* from, Node<dType, T2>* to, dType weight, T2 innovationNumber);
+        Edge(Node<dType, T2>* from, Node<dType, T2>* to, dType weight);
         /**
          * @brief Construct a new Edge object
          *
@@ -48,7 +50,7 @@ namespace NEAT {
          * @param weight weight of the edge
          * @param innovationNumber innovation number of the edge
          */
-        Edge(T2 from_id, T2 to_id, dType weight, T2 innovationNumber);
+        Edge(T2 from_id, T2 to_id, dType weight, bool disabled = false);
         /**
          * @brief Disable the edge
          *
@@ -70,7 +72,14 @@ namespace NEAT {
          *
          * @return dType weight of the edge
          */
-        dType getWeight() const;
+        const dType& getWeight() const;
+
+        /**
+         * @brief Set the Weight of the edge
+         *
+         * @param weight weight of the edge
+         */
+        void setWeight(dType weight);
 
         /**
          * @brief Update the from and to node of the edge by pointer
@@ -99,6 +108,28 @@ namespace NEAT {
          */
         const T2& getInnovationNumber() const;
 
+        /**
+         * @brief Get the From Node
+         *
+         * @param genome pointer to the genome
+         * @return Node<dType, T2>* pointer to the from node
+         */
+        Node<dType, T2>* getFrom(const Genome<dType, T2>* genome) const;
+
+        /**
+         * @brief Get the To Node
+         *
+         * @param genome pointer to the genome
+         * @return Node<dType, T2>* pointer to the to node
+         */
+        Node<dType, T2>* getTo(const Genome<dType, T2>* genome) const;
+
+        /**
+         * @brief clone the edge (deep copy)
+         *
+         * @return Edge<dType, T2>* pointer to the cloned edge
+         */
+        Edge<dType, T2>* clone() const;
     private:
         /**
          * @brief innovation number of the edge

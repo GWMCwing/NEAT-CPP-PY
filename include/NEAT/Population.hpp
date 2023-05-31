@@ -14,7 +14,7 @@ namespace NEAT {
      * @tparam dType type of data
      * @tparam T2 type of innovation number
      */
-    template <typename dType = float, typename T2 = int>
+    template <typename dType = double, typename T2 = int>
     class Population final {
     public:
         Population();
