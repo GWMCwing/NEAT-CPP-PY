@@ -120,12 +120,20 @@ namespace NEAT {
         void mutate(GeneHistory<dType, T2>& geneHistory);
 
         /**
-         * @brief Predict the output of the genome
+         * @brief get the prediction from the genome
          *
-         * @param inputs inputs to the genome
-         * @return dType output of the genome
+         * @param inputs input vector
+         * @param outputs output vector
          */
-        dType predict(const std::vector<dType>& inputs);
+        void feedForward(const std::vector<dType>& inputs, std::vector<dType>& outputs);
+
+        /**
+         * @brief get the prediction from the genome
+         *
+         * @param inputs input vector
+         * @return T2 prediction class
+         */
+        T2 predict(const std::vector<dType>& inputs);
 
         /**
          * @brief clone a genome with the same nodes, edges, and fitness
@@ -168,6 +176,12 @@ namespace NEAT {
          *
          */
         void mutateActivationFunction();
+
+        /**
+         * @brief Mutate the genome by changing the bias of a node
+         *
+         */
+        void mutateBias();
 
         /**
          * @brief Mutate the genome by changing the bias of a node

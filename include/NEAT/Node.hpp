@@ -77,6 +77,54 @@ namespace NEAT {
         void setLayer(int layer);
 
         /**
+         * @brief reset the value of the node
+         *
+         */
+        void reset();
+
+        /**
+         * @brief Get the value of the node
+         *
+         * @return const dType&
+         */
+        const dType& getValue() const;
+
+        /**
+         * @brief get the value of the node
+         *
+         * @return dType& bias of the node
+         */
+        const dType& getBias() const;
+
+        /**
+         * @brief set the bias of the node
+         *
+         * @param value value of the bias node
+         */
+        void setBias(dType value);
+
+        /**
+         * @brief get if node has been visited in a feed forward
+         *
+         * @return true node has been visited
+         * @return false node has not been visited
+         */
+        const bool& isVisited() const;
+
+        /**
+         * @brief set if node has been visited in a feed forward
+         *
+         * @param visited node has been visited
+         */
+        void setVisited(bool visited);
+
+        /**
+         * @brief feed forward the node
+         *
+         */
+        void forwardPropagate();
+
+        /**
          * @brief Clone this node (deep copy)
          *
          * @return Node<dType, T2>* a pointer to the cloned node
@@ -106,6 +154,11 @@ namespace NEAT {
          */
         dType value;
         /**
+         * @brief bias of the node
+         *
+         */
+        dType bias;
+        /**
          * @brief id of the node
          *
          */
@@ -130,6 +183,11 @@ namespace NEAT {
          *
          */
         int layer;
+        /**
+         * @brief visited flag for feed forward
+         *
+         */
+        bool visited = false;
         // NodeState state = NodeState::UNINITIALIZED;
         /**
          * @brief activation function of the node

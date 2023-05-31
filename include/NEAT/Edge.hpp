@@ -40,8 +40,9 @@ namespace NEAT {
          * @param to pointer to the to node
          * @param weight weight of the edge
          * @param innovationNumber innovation number of the edge
+         * @param disabled whether the edge is disabled
          */
-        Edge(Node<dType, T2>* from, Node<dType, T2>* to, dType weight);
+        Edge(Node<dType, T2>* from, Node<dType, T2>* to, dType weight, T2 innovationNumber, bool disabled = false);
         /**
          * @brief Construct a new Edge object
          *
@@ -49,8 +50,9 @@ namespace NEAT {
          * @param to_id id of the to node
          * @param weight weight of the edge
          * @param innovationNumber innovation number of the edge
+         * @param disabled whether the edge is disabled
          */
-        Edge(T2 from_id, T2 to_id, dType weight, bool disabled = false);
+        Edge(T2 from_id, T2 to_id, dType weight, T2 innovationNumber, bool disabled = false);
         /**
          * @brief Disable the edge
          *
