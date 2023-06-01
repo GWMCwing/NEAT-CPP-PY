@@ -239,7 +239,7 @@ namespace NEAT {
                 const NodeType nodeType = originalFromNode->getType();
                 const dType2 bias = originalFromNode->getBias();
                 const int layer = originalFromNode->getLayer();
-                ActivationFunction<dType2>* activationFunction = originalFromNode->getActivationFunction(); // TODO:
+                ActivationFunction<dType2>* activationFunction = originalFromNode->getActivationFunction();
                 fromNode = new Node<dType2, T3>(id, nodeType, layer, bias, activationFunction);
                 fromNode->addOutgoingEdge(const_cast<Edge<dType, T2>*>(edge));
                 offspring->addNode_noClone(fromNode);

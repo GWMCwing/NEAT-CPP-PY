@@ -162,6 +162,12 @@ namespace NEAT {
         const std::vector<Edge<dType, T2>*>& getIncomingEdges() const;
         const std::vector<Edge<dType, T2>*>& getOutgoingEdges() const;
 
+        /**
+         * @brief print the node
+         *
+         */
+        void print(int tabSize = 0) const;
+
         // NEAT::Genome will handle all the memory management
     private:
         /**

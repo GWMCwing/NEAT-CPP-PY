@@ -53,6 +53,7 @@ namespace NEAT {
          * @param disabled whether the edge is disabled
          */
         Edge(T2 from_id, T2 to_id, dType weight, T2 innovationNumber, bool disabled = false);
+        ~Edge();
         /**
          * @brief Disable the edge
          *
@@ -132,6 +133,13 @@ namespace NEAT {
          * @return Edge<dType, T2>* pointer to the cloned edge
          */
         Edge<dType, T2>* clone() const;
+
+        /**
+         * @brief print info of the edge
+         *
+         */
+        void print(int tabSize = 0) const;
+
     private:
         /**
          * @brief innovation number of the edge

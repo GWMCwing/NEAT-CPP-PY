@@ -184,6 +184,11 @@ namespace NEAT {
          */
         Genome<dType, T2>* clone() const;
 
+        /**
+         * @brief print the genome
+         *
+         */
+        void print(int tabSize = 0) const;
         // 
     private:
 

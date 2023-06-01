@@ -3,6 +3,7 @@
 
 #include <random>
 #include <math.h>
+#include <iostream>
 
 namespace NEAT {
 
@@ -52,6 +53,11 @@ namespace NEAT {
         std::mt19937 gen(rd());
         std::uniform_int_distribution<dType> d(min, max);
         return d(gen);
+    }
+
+    inline void coutTab(int tabSize) {
+        for (int i = 0; i < tabSize; i++)
+            std::cout << '\t';
     }
 
     // unused

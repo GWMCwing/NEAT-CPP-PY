@@ -1,7 +1,9 @@
+#include <iostream>
 #include <algorithm>
 #include <vector>
 
 #include "../include/NEAT/Node.hpp"
+#include "../include/NEAT/Helper.hpp"
 
 namespace NEAT {
 
@@ -101,13 +103,14 @@ namespace NEAT {
     Node<dType, T2>* Node<dType, T2>::clone() const {
         Node<dType, T2>* newNode = new Node<dType, T2>(id, nodeType, layer, bias, activationFunction);
         newNode->value = value;
-        for (const Edge<dType, T2>* edge : incoming_edges) {
-            newNode->incoming_edges.push_back(edge->clone());
-        }
-        for (const Edge<dType, T2>* edge : outgoing_edges) {
-            newNode->outgoing_edges.push_back(edge->clone());
-        }
-        newNode->sortEdges();
+        // TODO: clone edges without duplicating them, possible get from a genome as a parameter input
+        // for (const Edge<dType, T2>* edge : incoming_edges) {
+        //     newNode->incoming_edges.push_back(edge->clone());
+        // }
+        // for (const Edge<dType, T2>* edge : outgoing_edges) {
+        //     newNode->outgoing_edges.push_back(edge->clone());
+        // }
+        // newNode->sortEdges();
         return newNode;
     }
 
@@ -154,6 +157,45 @@ namespace NEAT {
     template <typename dType, typename T2>
     const std::vector<Edge<dType, T2>*>& Node<dType, T2>::getOutgoingEdges() const {
         return outgoing_edges;
+    }
+
+    template <typename dType, typename T2>
+    void Node<dType, T2>::print(int tabSize) const {
+        coutTab(tabSize);
+        std::cout << "Node: " << id << " type: ";
+        if (nodeType == NodeType::INPUT) {
+            std::cout << "INPUT";
+        } else if (nodeType == NodeType::OUTPUT) {
+            std::cout << "OUTPUT";
+        } else if (nodeType == NodeType::HIDDEN) {
+            std::cout << "HIDDEN";
+        } else if (nodeType == NodeType::BIAS) {
+            std::cout << "BIAS";
+        } else {
+            std::cout << "UNKNOWN";
+        }
+        std::cout << " layer: " << layer << " bias: " << bias << " value: " << value << std::endl;
+        coutTab(tabSize);
+        std::cout << "Incoming edges: " << std::endl;
+        if (incoming_edges.size() == 0) {
+            coutTab(tabSize + 1);
+            std::cout << "None" << std::endl;
+        } else {
+            for (Edge<dType, T2>* edge : incoming_edges) {
+                edge->print(tabSize + 1);
+            }
+        }
+        coutTab(tabSize);
+
+        std::cout << "Outgoing edges: " << std::endl;
+        if (outgoing_edges.size() == 0) {
+            coutTab(tabSize + 1);
+            std::cout << "None" << std::endl;
+        } else {
+            for (Edge<dType, T2>* edge : outgoing_edges) {
+                edge->print(tabSize + 1);
+            }
+        }
     }
 
     // Explicitly instantiate

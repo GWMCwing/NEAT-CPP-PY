@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../include/NEAT/Edge.hpp"
 #include "../include/NEAT/Genome.hpp"
 #include "../include/NEAT/Node.hpp"
@@ -21,6 +22,10 @@ namespace NEAT {
     Edge<dType, T2>::Edge(T2 from_id, T2 to_id, dType weight, T2 innovationNumber, bool disabled) : INNOVATION_NUMBER(innovationNumber),
         from_id(from_id), to_id(to_id), weight(weight), disabled(disabled), state(EdgeState::ID_ENABLED) { }
 
+    template <typename dType, typename T2>
+    Edge<dType, T2>::~Edge() {
+        // std::cout << "Edge destructor called: " << INNOVATION_NUMBER << std::endl;
+    }
 
     template <typename dType, typename T2>
     void Edge<dType, T2>::disable() {
@@ -73,7 +78,11 @@ namespace NEAT {
 
     template <typename dType, typename T2>
     Node<dType, T2>* Edge<dType, T2>::getFrom(const Genome<dType, T2>* genome) const {
-        if (this->state == EdgeState::ID_ENABLED) {
+        if (this->state == EdgeState::ID_ENABLED || genome != nullptr) {
+            if (genome == nullptr) {
+                std::cout << "Genome is nullptr" << std::endl;
+                return nullptr;
+            }
             return genome->getNode(this->from_id);
         }
         return this->from;
@@ -81,7 +90,11 @@ namespace NEAT {
 
     template <typename dType, typename T2>
     Node<dType, T2>* Edge<dType, T2>::getTo(const Genome<dType, T2>* genome) const {
-        if (this->state == EdgeState::ID_ENABLED) {
+        if (this->state == EdgeState::ID_ENABLED || genome != nullptr) {
+            if (genome == nullptr) {
+                std::cout << "Genome is nullptr" << std::endl;
+                return nullptr;
+            }
             return genome->getNode(this->to_id);
         }
         return this->to;
@@ -89,7 +102,13 @@ namespace NEAT {
 
     template <typename dType, typename T2>
     Edge<dType, T2>* Edge<dType, T2>::clone() const {
-        return new Edge<dType, T2>(this->from_id, this->to_id, this->weight, this->disabled);
+        return new Edge<dType, T2>(this->from_id, this->to_id, this->weight, INNOVATION_NUMBER, this->disabled);
+    }
+
+    template <typename dType, typename T2>
+    void Edge<dType, T2>::print(int tabSize) const {
+        coutTab(tabSize);
+        std::cout << "Edge: " << this->INNOVATION_NUMBER << " from: " << this->from_id << " to: " << this->to_id << " weight: " << this->weight << " disabled: " << (this->disabled ? "True" : "False") << std::endl;
     }
 
     // Explicitly instantiate
