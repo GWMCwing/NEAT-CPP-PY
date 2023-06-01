@@ -18,19 +18,19 @@ all: $(OUTPUT_PATH)/libpycall.so $(LOCAL_TEST_PATH)/main.exe
 
 $(OUTPUT_PATH)/libpycall.so: $(OBJ)
 	@echo compiling shared library
-	g++ -shared -o $@ $^ $(CPPFLAGS) -I$(INCLUDE_PATH)
+	@g++ -shared -o $@ $^ $(CPPFLAGS) -I$(INCLUDE_PATH)
 
 %.o: %.cpp
 	@echo compiling object: $@
-	g++ -c -o $@ $< $(CPPFLAGS) -I$(INCLUDE_PATH)
+	@g++ -c -o $@ $< $(CPPFLAGS) -I$(INCLUDE_PATH)
 
 $(LOCAL_TEST_PATH)/main.o: $(LOCAL_TEST_PATH)/main.cpp
 	@echo compiling main.o
-	g++ -c -o $@ $< $(CPPFLAGS) -I$(INCLUDE_PATH)
+	@g++ -c -o $@ $< $(CPPFLAGS) -I$(INCLUDE_PATH)
 
 $(LOCAL_TEST_PATH)/main.exe: $(OBJ) $(LOCAL_TEST_PATH)/main.o 
 	@echo compiling main.exe for local _test
-	g++ -o $@ $^ $(CPPFLAGS) 
+	@g++ -o $@ $^ $(CPPFLAGS) 
 
 
 clean:
