@@ -37,9 +37,25 @@ namespace NEAT {
          * @param inputSize input size of genome
          * @param outputSize output size of genome
          * @param geneHistory gene history of genome
+         * @param init initialise genome with edges and nodes
          */
-        Genome(T2 inputSize, T2 outputSize);
+        Genome(T2 inputSize, T2 outputSize, bool init = true);
         virtual ~Genome();
+
+        /**
+         * @brief Get the Input Size object
+         *
+         * @return T2 input size
+         */
+        const T2& getInputSize() const;
+
+        /**
+         * @brief Get the Output Size object
+         *
+         * @return T2 output size
+         */
+        const T2& getOutputSize() const;
+
         /**
          * @brief Get the Nodes object
          *
@@ -66,6 +82,32 @@ namespace NEAT {
          * @return Node<dType, T2>* Node pointer if found, nullptr otherwise
          */
         Node<dType, T2>* getNode(T2 id) const;
+
+        /**
+         * @brief Add a edge to the genome by cloning
+         *
+         * @param edge edge to add node
+         * @return true add success
+         * @return false add fail
+         */
+        bool addCloneEdge(const Edge<dType, T2>* edge);
+        /**
+         * @brief Add a node to the genome by cloning
+         *
+         * @param node node to add node
+         * @return true add success
+         * @return false add fail
+         */
+        bool addCloneNode(const Node<dType, T2>* node);
+
+        /**
+         * @brief add a node to the genome without cloning
+         *
+         * @param node node to add node
+         * @return true add success
+         */
+        bool addNode_noClone(Node<dType, T2>* node);
+
         // 
         /**
          * @brief Disable an edge from the genome
@@ -200,15 +242,23 @@ namespace NEAT {
          * @brief Add a node to the genome
          *
          * @param node node to add
+         * @return true if node is added, false otherwise
          */
-        void addNode(Node<dType, T2>* node);
+        bool addNode(Node<dType, T2>* node);
         /**
          * @brief Add an edge to the genome
          *
          * @param edge edge to add
+         * @return true if edge is added, false otherwise
          */
-        void addEdge(Edge<dType, T2>* edge);
-        void addEdge(std::vector<Edge<dType, T2>* > edges);
+        bool addEdge(Edge<dType, T2>* edge);
+        /**
+         * @brief Add a vector of nodes to the genome
+         *
+         * @param edges
+         * @return std::vector<bool> vector of bools indicating if the node is added
+         */
+        std::vector<bool> addEdge(std::vector<Edge<dType, T2>* > edges);
         // input size
         T2 inputSize;
         // output size

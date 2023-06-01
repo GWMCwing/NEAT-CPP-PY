@@ -1,14 +1,25 @@
 #include "../include/NEAT/Edge.hpp"
-
+#include "../include/NEAT/Genome.hpp"
+#include "../include/NEAT/Node.hpp"
+#include "../include/NEAT/Helper.hpp"
 
 namespace NEAT {
+    // forward declaration
     template <typename dType, typename T2>
-    Edge<dType, T2>::Edge(Node<dType, T2>* from, Node<dType, T2>* to, dType weight, T2 innovationNumber) :INNOVATION_NUMBER(innovationNumber),
-        from(from), to(to), weight(weight), state(EdgeState::POINTER_ENABLED) { }
+    class Genome;
+    template <typename dType, typename T2>
+    class Node;
 
     template <typename dType, typename T2>
-    Edge<dType, T2>::Edge(T2 from_id, T2 to_id, dType weight, T2 innovationNumber) : INNOVATION_NUMBER(innovationNumber),
-        from_id(from_id), to_id(to_id), weight(weight), state(EdgeState::ID_ENABLED) { }
+    Edge<dType, T2>::Edge(Node<dType, T2>* from, Node<dType, T2>* to, dType weight, T2 innovationNumber, bool disabled) :INNOVATION_NUMBER(innovationNumber),
+        from(from), to(to), weight(weight), disabled(disabled), state(EdgeState::BOTH_ENABLED) {
+        this->from_id = from->getId();
+        this->to_id = to->getId();
+    }
+
+    template <typename dType, typename T2>
+    Edge<dType, T2>::Edge(T2 from_id, T2 to_id, dType weight, T2 innovationNumber, bool disabled) : INNOVATION_NUMBER(innovationNumber),
+        from_id(from_id), to_id(to_id), weight(weight), disabled(disabled), state(EdgeState::ID_ENABLED) { }
 
 
     template <typename dType, typename T2>
@@ -24,6 +35,16 @@ namespace NEAT {
     template <typename dType, typename T2>
     void Edge<dType, T2>::toggle() {
         this->disabled = !this->disabled;
+    }
+
+    template <typename dType, typename T2>
+    const dType& Edge<dType, T2>::getWeight() const {
+        return this->weight;
+    }
+
+    template <typename dType, typename T2>
+    void Edge<dType, T2>::setWeight(dType weight) {
+        this->weight = weight;
     }
 
     template <typename dType, typename T2>
@@ -50,9 +71,28 @@ namespace NEAT {
         return this->INNOVATION_NUMBER;
     }
 
+    template <typename dType, typename T2>
+    Node<dType, T2>* Edge<dType, T2>::getFrom(const Genome<dType, T2>* genome) const {
+        if (this->state == EdgeState::ID_ENABLED) {
+            return genome->getNode(this->from_id);
+        }
+        return this->from;
+    }
+
+    template <typename dType, typename T2>
+    Node<dType, T2>* Edge<dType, T2>::getTo(const Genome<dType, T2>* genome) const {
+        if (this->state == EdgeState::ID_ENABLED) {
+            return genome->getNode(this->to_id);
+        }
+        return this->to;
+    }
+
+    template <typename dType, typename T2>
+    Edge<dType, T2>* Edge<dType, T2>::clone() const {
+        return new Edge<dType, T2>(this->from_id, this->to_id, this->weight, this->disabled);
+    }
+
     // Explicitly instantiate
-    template class Edge<float, int>;
     template class Edge<double, int>;
-    template class Edge<float, long>;
     template class Edge<double, long>;
 }

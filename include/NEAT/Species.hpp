@@ -15,6 +15,19 @@ namespace NEAT {
     class Edge;
 
     /**
+     * @brief Struct for edge difference
+     *
+     * @tparam dType type of data
+     * @tparam T2 type of innovation number
+     */
+    template <typename dType = double, typename T2 = int>
+    struct EdgeDifference {
+        std::vector<const Edge<dType, T2>*> disjoint;
+        std::vector<const Edge<dType, T2>*> excess;
+        std::vector<const Edge<dType, T2>*> matching;
+    };
+
+    /**
      * @brief Class for Species storage, reproduction and handling, all genomes has to be calculated fitness before adding
      *
      * @tparam dType type of data
@@ -90,24 +103,35 @@ namespace NEAT {
             dType2 getDistance(const Genome<dType2, T3>* genome, dType2 c1, dType2 c2, dType2 c3) const;
 
             /**
-             * @brief Get the Excess Difference of the genome and the representative of the species
+             * @brief Get the Edge Difference of 2 genomes
              *
-             * @param incompatibleEdge incompatible edges of the genome to compare
-             * @param maxId_representative max innovation number of the representative of the species
-             * @param maxId_target max innovation number of the genome
-             * @return T3 excess difference
+             * @param genome1 reference genome
+             * @param genome2 target genome
+             * @return EdgeDifference
              */
-            T3 getExcessDifference(const std::vector<T3>& incompatibleEdge, const T3& maxId_representative, const T3& maxId_target) const;
+            EdgeDifference<dType2, T3> getEdgeDifference(const Genome<dType2, T3>* genome1, const Genome<dType2, T3>* genome2) const;
 
-            /**
-             * @brief Get the Disjoint Difference of the genome and the representative of the species
-             *
-             * @param incompatibleEdge incompatible edges of the genome to compare
-             * @param maxId_representative max innovation number of the representative of the species
-             * @param maxId_target max innovation number of the genome
-             * @return T3 disjoint difference
-             */
-            T3 getDisjointDifference(const std::vector<T3>& incompatibleEdge, const T3& maxId_representative, const T3& maxId_target) const;
+            // /**
+            //  * @brief Get the Excess Difference of the genome and the representative of the species
+            //  *
+            //  * @param incompatibleEdge incompatible edges of the genome to compare
+            //  * @param maxId_representative max innovation number of the representative of the species
+            //  * @param maxId_target max innovation number of the genome
+            //  * @return T3 excess difference
+            //  * merged with getDisjointDifference
+            //  */
+            // T3 getExcessDifference(const std::vector<T3>& incompatibleEdge, const T3& maxId_representative, const T3& maxId_target) const;
+
+            // /**
+            //  * @brief Get the Disjoint Difference of the genome and the representative of the species
+            //  *
+            //  * @param incompatibleEdge incompatible edges of the genome to compare
+            //  * @param maxId_representative max innovation number of the representative of the species
+            //  * @param maxId_target max innovation number of the genome
+            //  * @return T3 disjoint difference
+            //  * merged with getExcessDifference
+            //  */
+            // T3 getDisjointDifference(const std::vector<T3>& incompatibleEdge, const T3& maxId_representative, const T3& maxId_target) const;
 
             /**
              * @brief Get the Average Weight Difference of the genome and the representative of the species

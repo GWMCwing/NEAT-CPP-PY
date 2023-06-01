@@ -4,11 +4,14 @@
 #include <vector>
 
 #include "Activation.hpp"
+#include "Genome.hpp"
 #include "Edge.hpp"
 
 namespace NEAT {
 
     // forward declaration
+    template <typename dType, typename T2>
+    class Genome;
     template <typename dType, typename T2>
     class Edge;
 
@@ -41,13 +44,12 @@ namespace NEAT {
         /**
          * @brief Construct a new Node object with initial value
          *
-         * @param value value of the node
          * @param id id of the node
          * @param nodeType type of the node
          * @param layer layer of the node
          * @param activationFunction activation function of the node
          */
-        Node(T2 id, NodeType nodeType, int layer, ActivationFunction<dType>* activationFunction);
+        Node(T2 id, NodeType nodeType, int layer, dType bias, ActivationFunction<dType>* activationFunction);
 
         /**
          * @brief Get the Id of the node
@@ -90,6 +92,13 @@ namespace NEAT {
         const dType& getValue() const;
 
         /**
+         * @brief Set the value of the node
+         *
+         * @param value
+         */
+        void setValue(dType value);
+
+        /**
          * @brief get the value of the node
          *
          * @return dType& bias of the node
@@ -102,6 +111,13 @@ namespace NEAT {
          * @param value value of the bias node
          */
         void setBias(dType value);
+
+        /**
+         * @brief Get the Activation Function object pointer
+         *
+         * @return ActivationFunction<dType>*
+         */
+        ActivationFunction<dType>* getActivationFunction() const;
 
         /**
          * @brief get if node has been visited in a feed forward
@@ -122,7 +138,7 @@ namespace NEAT {
          * @brief feed forward the node
          *
          */
-        void forwardPropagate();
+        void forwardPropagate(const Genome<dType, T2>* genome);
 
         /**
          * @brief Clone this node (deep copy)
