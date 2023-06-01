@@ -258,7 +258,7 @@ namespace NEAT {
                 const dType bias = originalFromNode->getBias();
                 const int layer = originalFromNode->getLayer();
                 ActivationFunction<dType>* activationFunction = originalFromNode->getActivationFunction();
-                fromNode = new Node<dType, T2>(id, nodeType, bias, layer, activationFunction);
+                fromNode = new Node<dType, T2>(id, nodeType, layer, bias, activationFunction);
                 newGenome->addNode(fromNode);
                 fromNode->addOutgoingEdge(newEdge);
             } else {
@@ -272,7 +272,7 @@ namespace NEAT {
                 const dType bias = originalToNode->getBias();
                 const int layer = originalToNode->getLayer();
                 ActivationFunction<dType>* activationFunction = originalToNode->getActivationFunction();
-                toNode = new Node<dType, T2>(id, nodeType, bias, layer, activationFunction);
+                toNode = new Node<dType, T2>(id, nodeType, layer, bias, activationFunction);
                 newGenome->addNode(toNode);
                 toNode->addIncomingEdge(newEdge);
             } else {
