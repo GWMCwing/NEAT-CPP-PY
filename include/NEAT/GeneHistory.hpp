@@ -40,6 +40,9 @@ namespace NEAT {
                     edges[{ i, j + inputSize }] = { i * outputSize + j };
                 }
             }
+            // set innovation number
+            edgeInnovationNumber = inputSize * outputSize;
+            nodeInnovationNumber = inputSize + outputSize;
         }
         T2 addNode(const T2 fromId, const T2 toId, const T2 edgeInnovationNumber) {
             // find if the node already exists

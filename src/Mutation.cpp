@@ -56,8 +56,10 @@ namespace NEAT {
         //   one from the new node to the second node with the same weight as the disabled edge
         const T2 innovationNumber1 = GeneHistory.addEdge(fromNode->getId(), newNodeId);
         const T2 innovationNumber2 = GeneHistory.addEdge(newNodeId, toNode->getId());
-        Edge<dType, T2>* newEdge1 = new Edge<dType, T2>(fromNode, newNode, innovationNumber1, 1);
-        Edge<dType, T2>* newEdge2 = new Edge<dType, T2>(newNode, toNode, innovationNumber2, edge->getWeight());
+        std::cout << "innovationNumber1: " << innovationNumber1 << std::endl;
+        std::cout << "innovationNumber2: " << innovationNumber2 << std::endl;
+        Edge<dType, T2>* newEdge1 = new Edge<dType, T2>(fromNode, newNode, 1, innovationNumber1);
+        Edge<dType, T2>* newEdge2 = new Edge<dType, T2>(newNode, toNode, edge->getWeight(), innovationNumber2);
         // 5. update the layer of the nodes, all nodes with layer > new node layer
         for (std::pair<const T2, Node<dType, T2>*>& nodePair : nodes) {
             Node<dType, T2>* node = nodePair.second;
@@ -66,9 +68,12 @@ namespace NEAT {
             }
         }
         // 6. add the new node and edges to the genome
-        nodes.insert(std::make_pair(newNodeId, newNode));
-        edges.insert(std::make_pair(innovationNumber1, newEdge1));
-        edges.insert(std::make_pair(innovationNumber2, newEdge2));
+        // nodes.insert(std::make_pair(newNodeId, newNode));
+        // edges.insert(std::make_pair(innovationNumber1, newEdge1));
+        // edges.insert(std::make_pair(innovationNumber2, newEdge2));
+        this->addNode(newNode);
+        this->addEdge(newEdge1);
+        this->addEdge(newEdge2);
         fromNode->addOutgoingEdge(newEdge1);
         newNode->addIncomingEdge(newEdge1);
         newNode->addOutgoingEdge(newEdge2);
@@ -79,11 +84,11 @@ namespace NEAT {
     void Genome<dType, T2>::mutateAddEdge(GeneHistory<dType, T2>& GeneHistory) {
         // 1. select two random distinct nodes 
         Node<dType, T2>* node1, * node2;
-        node1 = getRandomNode(false, false);
+        node1 = getRandomNode(true, true);
         if (node1 == nullptr)
             return;
         while (true) {
-            node2 = getRandomNode(false, false);
+            node2 = getRandomNode(true, true);
             if (node2 == nullptr)
                 return;
             if (node1 != node2 && node1->getLayer() != node2->getLayer()) break;
@@ -104,7 +109,7 @@ namespace NEAT {
         const T2 innovationNumber = GeneHistory.addEdge(node1->getId(), node2->getId());
         const dType weight = gaussianDistribution<dType>(0, 1);
         Edge<dType, T2>* newEdge = new Edge<dType, T2>(node1, node2, weight, innovationNumber);
-        edges.insert(std::make_pair(innovationNumber, newEdge));
+        this->addEdge(newEdge);
         node1->addOutgoingEdge(newEdge);
         node2->addIncomingEdge(newEdge);
     }
