@@ -3,6 +3,7 @@
 #include <algorithm>
 // TODO: iostream should also output to python console
 
+#include "../include/NEAT/SpeciesHandler.hpp"
 #include "../include/NEAT/Species.hpp"
 #include "../include/NEAT/Genome.hpp"
 #include "../include/NEAT/Edge.hpp"
@@ -17,12 +18,38 @@ namespace NEAT {
     class Edge;
     template <typename dType, typename T2>
     class GeneHistory;
+    template <typename dType, typename T2>
+    class Species;
 
     template <typename dType, typename T2>
-    SpeciesHandler<dType, T2>::SpeciesHandler(dType c1, dType c2, dType c3, dType threshold) :
+    SpeciesHandler<dType, T2>::SpeciesHandler(Genome<dType, T2>* genome, dType c1, dType c2, dType c3, dType threshold) :
         c1(c1), c2(c2), c3(c3), threshold(threshold) {
-        this->species = std::vector<Species<dType, T2>*>();
+        this->addGenome(genome);
     }
+    template <typename dType, typename T2>
+    SpeciesHandler<dType, T2>::SpeciesHandler(std::vector<Genome<dType, T2>*>& genome, dType c1, dType c2, dType c3, dType threshold) :
+        c1(c1), c2(c2), c3(c3), threshold(threshold) {
+        this->addGenome(genome);
+    }
+    template <typename dType, typename T2>
+    SpeciesHandler<dType, T2>::SpeciesHandler(Genome<dType, T2>* genome, SpeciesConfig<dType> speciesConfig) :
+        c1(speciesConfig.c1), c2(speciesConfig.c2), c3(speciesConfig.c3), threshold(speciesConfig.threshold) {
+        this->addGenome(genome);
+    }
+
+    template <typename dType, typename T2>
+    SpeciesHandler<dType, T2>::SpeciesHandler(std::vector<Genome<dType, T2>*>& genome, SpeciesConfig<dType> speciesConfig) :
+        c1(speciesConfig.c1), c2(speciesConfig.c2), c3(speciesConfig.c3), threshold(speciesConfig.threshold) {
+        this->addGenome(genome);
+    }
+
+    template <typename dType, typename T2>
+    SpeciesHandler<dType, T2>::~SpeciesHandler() {
+        for (Species<dType, T2>* s : species) {
+            delete s;
+        }
+    }
+
 
     template <typename dType, typename T2>
     void SpeciesHandler<dType, T2>::addGenome(Genome<dType, T2>* genome) {
@@ -43,14 +70,14 @@ namespace NEAT {
     }
 
     template <typename dType, typename T2>
-    void SpeciesHandler<dType, T2>::addGenome(std::vector<Genome<dType, T2>*> genomes) {
+    void SpeciesHandler<dType, T2>::addGenome(std::vector<Genome<dType, T2>*>& genomes) {
         for (Genome<dType, T2>* genome : genomes) {
             this->addGenome(genome);
         }
     }
 
     template <typename dType, typename T2>
-    std::vector<Genome<dType, T2>*> SpeciesHandler<dType, T2>::reproduce(dType c1, dType c2, dType c3, T2 n) const {
+    std::vector<Genome<dType, T2>*> SpeciesHandler<dType, T2>::reproduce(T2 n, const MutationConfig<dType>& mutationConfig) const {
         GeneHistory<dType, T2> geneHistory = GeneHistory<dType, T2>();
         //TODO: threading
         if (n <= 0) {
@@ -63,10 +90,10 @@ namespace NEAT {
             s->fitnessShare();
         }
         // reproduce
-        const T2 averageFitness = this->getAverageFitnessSum();
+        const dType averageFitness = this->getAverageFitnessSum();
         for (Species<dType, T2>* s : species) {
-            T2 numberToReproduce = s->getAverageFitness() / averageFitness * n;
-            std::vector<Genome<dType, T2>*> tempGeneration = s->generateNextGeneration(geneHistory, c1, c2, c3, numberToReproduce);
+            T2 numberToReproduce = static_cast<T2>(s->getAverageFitness() / averageFitness * n);
+            std::vector<Genome<dType, T2>*> tempGeneration = s->generateNextGeneration(geneHistory, numberToReproduce, mutationConfig);
             nextGeneration.insert(nextGeneration.end(), tempGeneration.begin(), tempGeneration.end());
         }
         // sort
@@ -78,11 +105,6 @@ namespace NEAT {
         //     nextGeneration.erase(nextGeneration.begin() + n, nextGeneration.end());
         // }
         return nextGeneration;
-    }
-
-    template <typename dType, typename T2>
-    std::vector<Genome<dType, T2>*> SpeciesHandler<dType, T2>::reproduce(T2 n) const {
-        return this->reproduce(this->c1, this->c2, this->c3, n);
     }
 
     template <typename dType, typename T2>

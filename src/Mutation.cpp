@@ -6,14 +6,16 @@
 
 namespace NEAT {
 
+
     template <typename dType, typename T2>
-    void Genome<dType, T2>::mutate(GeneHistory<dType, T2>& GeneHistory) {
-        const dType mutateAddNodeProbability = 0.03;
-        const dType mutateAddEdgeProbability = 0.05;
-        const dType mutateToggleEdgeProbability = 0.05;
-        const dType mutateWeightProbability = 0.8;
-        const dType mutateActivationFunctionProbability = 0.1;
-        const dType mutateBiasProbability = 0.1;
+    void Genome<dType, T2>::mutate(GeneHistory<dType, T2>& GeneHistory, const MutationConfig<dType>& mutationConfig) {
+        // TODO: Extract probabilities to a config file
+        const dType mutateAddNodeProbability = mutationConfig.mutateAddNodeProbability;
+        const dType mutateAddEdgeProbability = mutationConfig.mutateAddEdgeProbability;
+        const dType mutateToggleEdgeProbability = mutationConfig.mutateToggleEdgeProbability;
+        const dType mutateWeightProbability = mutationConfig.mutateWeightProbability;
+        const dType mutateActivationFunctionProbability = mutationConfig.mutateActivationFunctionProbability;
+        const dType mutateBiasProbability = mutationConfig.mutateBiasProbability;
 
         if (uniformDistribution<dType>(0, 1) < mutateAddNodeProbability) {
             mutateAddNode(GeneHistory);
@@ -56,8 +58,8 @@ namespace NEAT {
         //   one from the new node to the second node with the same weight as the disabled edge
         const T2 innovationNumber1 = GeneHistory.addEdge(fromNode->getId(), newNodeId);
         const T2 innovationNumber2 = GeneHistory.addEdge(newNodeId, toNode->getId());
-        std::cout << "innovationNumber1: " << innovationNumber1 << std::endl;
-        std::cout << "innovationNumber2: " << innovationNumber2 << std::endl;
+        // std::cout << "innovationNumber1: " << innovationNumber1 << std::endl;
+        // std::cout << "innovationNumber2: " << innovationNumber2 << std::endl;
         Edge<dType, T2>* newEdge1 = new Edge<dType, T2>(fromNode, newNode, 1, innovationNumber1);
         Edge<dType, T2>* newEdge2 = new Edge<dType, T2>(newNode, toNode, edge->getWeight(), innovationNumber2);
         // 5. update the layer of the nodes, all nodes with layer > new node layer
@@ -109,9 +111,9 @@ namespace NEAT {
         const T2 innovationNumber = GeneHistory.addEdge(node1->getId(), node2->getId());
         const dType weight = gaussianDistribution<dType>(0, 1);
         Edge<dType, T2>* newEdge = new Edge<dType, T2>(node1, node2, weight, innovationNumber);
-        this->addEdge(newEdge);
         node1->addOutgoingEdge(newEdge);
         node2->addIncomingEdge(newEdge);
+        this->addEdge(newEdge);
     }
 
     template <typename dType, typename T2>
@@ -126,6 +128,7 @@ namespace NEAT {
     template <typename dType, typename T2>
     void Genome<dType, T2>::mutateWeight() {
         // TODO: extract sd to a configurable constant
+        // TODO: allow small probability of assigning a random weight
         const dType sd = 0.001;
         Edge<dType, T2>* edge = getRandomEdge();
         if (edge == nullptr) {
@@ -154,8 +157,13 @@ namespace NEAT {
 
     template <typename dType, typename T2>
     Edge<dType, T2>* Genome<dType, T2>::getRandomEdge() {
-        const T2 i = uniformIntDistribution<T2>(0, static_cast<T2>(edges.size() - 1));
-        return edges[i];
+        T2 i = uniformIntDistribution<T2>(0, static_cast<T2>(edges.size() - 1));
+        Edge<dType, T2>* edge = nullptr;
+        for (auto const& [key, val] : edges) {
+            if (i-- == 0)
+                edge = val;
+        }
+        return edge;
     }
 
     template <typename dType, typename T2>
@@ -165,8 +173,12 @@ namespace NEAT {
         }
 
         while (true) {
-            const T2 i = uniformIntDistribution<T2>(0, static_cast<T2>(nodes.size() - 1));
-            Node<dType, T2>* node = nodes[i];
+            T2 i = uniformIntDistribution<T2>(0, static_cast<T2>(nodes.size() - 1));
+            Node<dType, T2>* node = nullptr;
+            for (auto const& [key, val] : nodes) {
+                if (i-- == 0)
+                    node = val;
+            }
             if (allowInput && node->getType() == NodeType::INPUT) {
                 return node;
             }

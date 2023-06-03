@@ -176,7 +176,7 @@ namespace NEAT {
         }
         std::cout << " layer: " << layer << " bias: " << bias << " value: " << value << std::endl;
         coutTab(tabSize);
-        std::cout << "Incoming edges: " << std::endl;
+        std::cout << "  Incoming edges: " << incoming_edges.size() << std::endl;
         if (incoming_edges.size() == 0) {
             coutTab(tabSize + 1);
             std::cout << "None" << std::endl;
@@ -186,8 +186,7 @@ namespace NEAT {
             }
         }
         coutTab(tabSize);
-
-        std::cout << "Outgoing edges: " << std::endl;
+        std::cout << "  Outgoing edges: " << outgoing_edges.size() << std::endl;
         if (outgoing_edges.size() == 0) {
             coutTab(tabSize + 1);
             std::cout << "None" << std::endl;

@@ -7,6 +7,7 @@
 #include "./Node.hpp"
 #include "./Edge.hpp"
 #include "./GeneHistory.hpp"
+#include "./config.hpp"
 
 namespace NEAT {
     // Forward declaration
@@ -16,6 +17,8 @@ namespace NEAT {
     class Edge;
     template <typename dType, typename T2>
     class GeneHistory;
+    template <typename dType>
+    struct MutationConfig;
 
     /**
      * @brief Class for Genome storage, prediction and handling
@@ -159,7 +162,7 @@ namespace NEAT {
          * @brief Mutate the genome
          *
          */
-        void mutate(GeneHistory<dType, T2>& geneHistory);
+        void mutate(GeneHistory<dType, T2>& geneHistory, const MutationConfig<dType>& mutationConfig = MutationConfig<dType>());
 
         /**
          * @brief get the prediction from the genome

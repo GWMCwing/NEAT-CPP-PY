@@ -179,4 +179,5 @@ namespace NEAT {
     }
 }
 
+
 #endif // __NEAT_ACTIVATION_HPP__

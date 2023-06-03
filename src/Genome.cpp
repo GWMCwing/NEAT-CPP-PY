@@ -98,8 +98,8 @@ namespace NEAT {
             return false;
         }
         Edge<dType, T2>* cloneEdge = edge->clone();
-        std::cout << "addCloneEdge: " << cloneEdge->getInnovationNumber() << std::endl;
-        std::cout << "Address: " << cloneEdge << std::endl;
+        // std::cout << "addCloneEdge: " << cloneEdge->getInnovationNumber() << std::endl;
+        // std::cout << "Address: " << cloneEdge << std::endl;
         bool success = addEdge(cloneEdge);
         if (!success) {
             delete cloneEdge;
@@ -233,9 +233,10 @@ namespace NEAT {
     Genome<dType, T2>* Genome<dType, T2>::clone() const {
         // TODO: Check all clone mem leak or ref leak
         Genome<dType, T2>* newGenome = new Genome<dType, T2>(inputSize, outputSize, false);
+        newGenome->setFitness(fitness);
         for (std::pair<const T2, Edge<dType, T2>*> edgePair : edges) {
             Edge<dType, T2>* edge = edgePair.second;
-            std::cout << "edge: " << edge->getInnovationNumber() << std::endl;
+            // std::cout << "edge: " << edge->getInnovationNumber() << std::endl;
             newGenome->addCloneEdge(edge);
             // Edge<dType, T2>* cloneEdge = edge->clone();
             // if (newGenome->addEdge(cloneEdge) == false) {
@@ -291,6 +292,10 @@ namespace NEAT {
         coutTab(tabSize);
         std::cout << "  outputSize: " << outputSize << std::endl;
         coutTab(tabSize);
+        std::cout << "  hiddenSize: " << nodes.size() - inputSize - outputSize << std::endl;
+        coutTab(tabSize);
+        std::cout << "  edgeSize: " << edges.size() << std::endl;
+        coutTab(tabSize);
         std::cout << "  nodes: " << std::endl;
         for (std::pair<const T2, Node<dType, T2>*> pair : nodes) {
             pair.second->print(tabSize + 1);
@@ -308,6 +313,7 @@ namespace NEAT {
     bool Genome<dType, T2>::addNode(Node<dType, T2>* node) {
         // check if node already exists
         if (getNode(node->getId()) != nullptr) {
+            // std::cout << "node already exists: " << node->getId() << std::endl;
             return false;
         }
         nodes.insert(std::pair<T2, Node<dType, T2>*>(node->getId(), node));
@@ -318,7 +324,7 @@ namespace NEAT {
     bool Genome<dType, T2>::addEdge(Edge<dType, T2>* edge) {
         // check if edge already exists
         if (getEdge(edge->getInnovationNumber()) != nullptr) {
-            std::cout << "edge already exists: " << edge->getInnovationNumber() << std::endl;
+            // std::cout << "edge already exists: " << edge->getInnovationNumber() << std::endl;
             return false;
         }
         edges.insert(std::pair<T2, Edge<dType, T2>*>(edge->getInnovationNumber(), edge));
@@ -329,8 +335,7 @@ namespace NEAT {
     std::vector<bool> Genome<dType, T2>::addEdge(std::vector<Edge<dType, T2>*> edges) {
         std::vector<bool> addedEdges;
         for (Edge<dType, T2>* edge : edges) {
-            if (addEdge(edge))
-                addedEdges.push_back(addEdge(edge));
+            addedEdges.push_back(addEdge(edge));
         }
         return addedEdges;
     }
