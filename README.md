@@ -3,7 +3,7 @@
 ## Description
 
 This is a NEAT implementation in C++ with Python interface, intended to be used for speed improvement over pure Python implementation.  
-***C++ Direct usage is now supported!***
+***C++ Direct usage is now supported!***  
 This is repo is work in progress and under active development.  
 The implementation is based on the paper [Evolving Neural Networks through Augmenting Topologies](http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf) by Kenneth O. Stanley and Risto Miikkulainen.  
 
