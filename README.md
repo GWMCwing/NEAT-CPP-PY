@@ -12,26 +12,28 @@ Other languages support C++ binding is planned to be added in the future.
 
 This project is still under development and is not ready for use.  
 
-- Currently Genome class is implemented and can be used to interact with environment.
+- Currently C++ direct usage is supported. The implementation has been tested against the XOR problem, dynamic pole balancing problem is planned to be tested next.
 - C++ direct usage is expected to be completed in late June 2023.
 - Python direct usage is expected to be completed in late July to late August 2023.
 
 ## Road map
 
-- [ ] C++ implementation
+- [x] C++ implementation
   - [x] Node class implementation
   - [x] Edge class implementation
   - [x] Genome class implementation
   - [x] Memory management test for above classes
   - [x] Species class implementation
   - [x] SpeciesHandler class implementation
-  - [ ] Memory management test for above classes
-  - [ ] Population class
-  - [ ] Memory management test for above classes
-  - [ ] C API
-- [ ] Testing
-  - [ ] Test Handler class
+  - [x] Memory management test for above classes
+  - [x] Population class
+  - [x] Memory management test for above classes
+- [x] Testing
+  - [x] Test Handler class
+  - [x] Basic XOR test
+  - [ ] Dynamic Pole Balancing problem test
 - [ ] Python interface
+  - [ ] C API
   - [ ] Python interface for Node class
   - [ ] Python interface for Edge class
   - [ ] Python interface for Genome class
