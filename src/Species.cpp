@@ -177,13 +177,14 @@ namespace NEAT {
         std::sort(this->genomes.begin(), this->genomes.end(), [](const Genome<dType, T2>* genome1, const Genome<dType, T2>* genome2) {
             return genome1->getFitness() > genome2->getFitness();
             });
-        return this->genomes;
+        return genomes;
     }
 
     template <typename dType, typename T2>
-    std::vector<Genome<dType, T2>*> Species<dType, T2>::generateNextGeneration(GeneHistory<dType, T2>& geneHistory, T2 n, const MutationConfig<dType>& mutationConfig) const {
+    std::vector<Genome<dType, T2>*> Species<dType, T2>::generateNextGeneration(GeneHistory<dType, T2>& geneHistory, T2 n, const MutationConfig<dType>& mutationConfig) {
         std::vector<Genome<dType, T2>*> nextGeneration;
         nextGeneration.reserve(n);
+        sortGenomes();
         for (T2 i = 0; i < n; i++) {
             Genome<dType, T2>* newGenome = nullptr;
             // std::cout << "Generating genome " << i << " of " << n << std::endl;

@@ -23,12 +23,12 @@ namespace NEAT {
         std::vector<T2> generateRandomIntVector(T2 size, T2 lowerBound, T2 upperBound) const;
         std::vector<dType> generateRandomDoubleVector(T2 size, dType lowerBound, dType upperBound) const;
 
-        std::vector<std::vector<dType>> massFeedForward(const std::vector<Genome<dType, T2>*>& genomes, std::vector<std::vector<dType>> inputs) const;
-        std::vector<std::vector<dType>> massFeedForward(const std::vector<Genome<dType, T2>*>& genomes, std::vector<dType> inputs) const;
+        std::vector<std::vector<dType>> massFeedForward(const std::vector<Genome<dType, T2>*>& genomes, std::vector<std::vector<dType>>& inputs) const;
+        std::vector<std::vector<dType>> massFeedForward(const std::vector<Genome<dType, T2>*>& genomes, std::vector<dType>& inputs) const;
 
         void massAssignFitness(const std::vector<Genome<dType, T2>*>& genomes, const std::vector<dType>& fitnesses) const;
         void massAssignFitness(const std::vector<Genome<dType, T2>*>& genomes, dType fitness) const;
-        std::vector<dType> massAssignFitness(const std::vector<Genome<dType, T2>*>& genomes, dType(*fitnessCB)(dType)) const;
+        void massAssignFitness(const std::vector<Genome<dType, T2>*>& genomes, dType(*fitnessCB)(dType)) const;
 
         void massMutate(const std::vector<Genome<dType, T2>*>& genomes, int count = 1, MutationConfig<dType> mutationConfig = MutationConfig<dType>()) const;
         void massMutate(Genome<dType, T2>* genomes, int count = 1, MutationConfig<dType> mutationConfig = MutationConfig<dType>()) const;

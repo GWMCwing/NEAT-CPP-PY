@@ -133,7 +133,7 @@ namespace NEAT {
          * @param n number of genomes to reproduce
          * @return std::vector<Genome<dType, T2>*> next generation of genomes
          */
-        std::vector<Genome<dType, T2>*> generateNextGeneration(GeneHistory<dType, T2>& geneHistory, T2 n, const MutationConfig<dType>& mutationConfig) const;
+        std::vector<Genome<dType, T2>*> generateNextGeneration(GeneHistory<dType, T2>& geneHistory, T2 n, const MutationConfig<dType>& mutationConfig);
 
         /**
          * @brief Get the Average Fitness of the species, assume fitness sharing has been done and total fitness is calculated

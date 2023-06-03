@@ -36,7 +36,59 @@ namespace NEAT {
         return vec;
     }
 
+    template <typename dType, typename T2>
+    std::vector<std::vector<dType>> TestHandler<dType, T2>::massFeedForward(const std::vector<Genome<dType, T2>*>& genomes, std::vector<dType>& input) const {
+        std::vector<std::vector<dType>> outputs;
+        outputs.reserve(genomes.size());
+        for (Genome<dType, T2>* genome : genomes) {
+            std::vector<dType> tempOutput;
+            genome->feedForward(input, tempOutput);
+            outputs.push_back(tempOutput);
+        }
+        return outputs;
+    }
+
+    template <typename dType, typename T2>
+    std::vector<std::vector<dType>> TestHandler<dType, T2>::massFeedForward(const std::vector<Genome<dType, T2>*>& genomes, std::vector<std::vector<dType>>& inputs) const {
+        if (inputs.size() != genomes.size()) {
+            throw std::invalid_argument("The number of inputs must be equal to the number of genomes.");
+        }
+        std::vector<std::vector<dType>> outputs;
+        outputs.reserve(genomes.size());
+        for (T2 i = 0; i < static_cast<T2>(genomes.size()); i++) {
+            std::vector<dType> tempOutput;
+            genomes[i]->feedForward(inputs[i], tempOutput);
+            outputs.push_back(tempOutput);
+        }
+        return outputs;
+    }
+
+    template <typename dType, typename T2>
+    void TestHandler<dType, T2>::massAssignFitness(const std::vector<Genome<dType, T2>*>& genomes, const std::vector<dType>& fitnesses) const {
+        if (genomes.size() != fitnesses.size()) {
+            throw std::invalid_argument("The number of genomes must be equal to the number of fitnesses.");
+        }
+        for (T2 i = 0; i < static_cast<T2>(genomes.size()); i++) {
+            genomes[i]->setFitness(fitnesses[i]);
+        }
+    }
+
+    template <typename dType, typename T2>
+    void TestHandler<dType, T2>::massAssignFitness(const std::vector<Genome<dType, T2>*>& genomes, dType fitness) const {
+        for (T2 i = 0; i < static_cast<T2>(genomes.size()); i++) {
+            genomes[i]->setFitness(fitness);
+        }
+    }
+
     // TODO:
+    // template <typename dType, typename T2>
+    // void TestHandler<dType, T2>::massAssignFitness(const std::vector<Genome<dType, T2>*>& genomes, dType(*fitnessCB)(dType)) const {
+    //     for (Genome<dType, T2>* genome : genomes) {
+    //         genome->setFitness(fitnessCB(genome->));
+    //     }
+    // }
+
+
     // Explicitly instantiate the template class
     template class TestHandler<double, int>;
     template class TestHandler<double, long>;

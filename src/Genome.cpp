@@ -185,9 +185,10 @@ namespace NEAT {
         std::vector<Node<dType, T2>*> allNodes;
 
         if (static_cast<T2>(inputs.size()) != inputSize) {
-            std::cerr << "Input size does not match genome input size" << std::endl;
-            outputs.assign(outputSize, 0);
-            return;
+            throw "Input size does not match genome input size";
+            // std::cerr << "Input size does not match genome input size" << std::endl;
+            // outputs.assign(outputSize, 0);
+            // throw std::exception();
         }
         // 1. reset all nodes
         for (std::pair<const T2, Node<dType, T2>*> pair : nodes) {
