@@ -3,6 +3,7 @@
 ## Description
 
 This is a NEAT implementation in C++ with Python interface, intended to be used for speed improvement over pure Python implementation.  
+***C++ Direct usage is now supported!***
 This is repo is work in progress and under active development.  
 The implementation is based on the paper [Evolving Neural Networks through Augmenting Topologies](http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf) by Kenneth O. Stanley and Risto Miikkulainen.  
 
@@ -12,8 +13,8 @@ Other languages support C++ binding is planned to be added in the future.
 
 This project is still under development and is not ready for use.  
 
-- Currently C++ direct usage is supported. The implementation has been tested against the XOR problem, dynamic pole balancing problem is planned to be tested next.
-- C++ direct usage is expected to be completed in late June 2023.
+- Currently C++ direct usage is supported. 
+- The implementation has been tested against the XOR problem, dynamic pole balancing problem is planned to be tested next.
 - Python direct usage is expected to be completed in late July to late August 2023.
 
 ## Road map
