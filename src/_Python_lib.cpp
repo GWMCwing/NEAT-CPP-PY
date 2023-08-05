@@ -12,14 +12,14 @@
 
 namespace py = pybind11;
 
-// int add(int i, int j) {
-//   return i + j;
-// }
+int add(int i, int j) {
+  return i + j;
+}
 
-PYBIND11_MODULE(NEATCPP, m) {
+PYBIND11_MODULE(_neatcpy, m) {
   m.doc() = "NEATCPP Python Bindings";
 
-  // m.def("add", &add, "A function which adds two numbers");
+  m.def("add", &add, "A function which adds two numbers");
 
   py::class_ <NEAT::MutationConfig<double>>(m, "MutationConfig")
     .def(py::init<>())
