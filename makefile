@@ -1,4 +1,4 @@
-CPPFLAGS = -Wall -std=c++17 -O3 -fPIC
+CPPFLAGS = -Wall -std=c++17 -fPIC
 INCLUDE_PATH="/home/ubuntu/miniconda3/include/python3.11"
 PYBIND11_INCLDUES = "./lib/pybind11/include"
 # PYBIND11_LIB = "./lib/pybind11/include/pybind11/"
@@ -24,11 +24,11 @@ test: $(LOCAL_TEST_PATH)/main.exe
 
 $(OUTPUT_PATH)/libpycall.so: $(OBJ)
 	@echo compiling shared library
-	@g++ -shared -o $@ $^ $(CPPFLAGS) -I$(INCLUDE_PATH) -I$(PYBIND11_INCLDUES)
+	g++ -shared -o $@ $^ $(CPPFLAGS) -I$(INCLUDE_PATH) -I$(PYBIND11_INCLDUES)
 
 %.o: %.cpp
 	@echo compiling object: $@
-	@g++ -c -o $@ $< $(CPPFLAGS) -I$(INCLUDE_PATH) -I$(PYBIND11_INCLDUES)
+	g++ -c -o $@ $< $(CPPFLAGS) -I$(INCLUDE_PATH) -I$(PYBIND11_INCLDUES)
 
 $(LOCAL_TEST_PATH)/main.o: $(LOCAL_TEST_PATH)/main.cpp
 	@echo compiling main.o

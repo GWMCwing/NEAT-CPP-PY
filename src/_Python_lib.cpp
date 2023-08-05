@@ -1,6 +1,9 @@
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/functional.h>
+// #include <pybind11/pybind11.h>
+// #include <pybind11/stl.h>
+// #include <pybind11/functional.h>
+#include "../lib/pybind11/include/pybind11/pybind11.h"
+#include "../lib/pybind11/include/pybind11/stl.h"
+#include "../lib/pybind11/include/pybind11/functional.h"
 // 
 #include "../include/NEAT/Genome.hpp"
 #include "../include/NEAT/Population.hpp"
@@ -9,8 +12,14 @@
 
 namespace py = pybind11;
 
+// int add(int i, int j) {
+//   return i + j;
+// }
+
 PYBIND11_MODULE(NEATCPP, m) {
   m.doc() = "NEATCPP Python Bindings";
+
+  // m.def("add", &add, "A function which adds two numbers");
 
   py::class_ <NEAT::MutationConfig<double>>(m, "MutationConfig")
     .def(py::init<>())

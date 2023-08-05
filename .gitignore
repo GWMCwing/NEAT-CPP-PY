@@ -33,3 +33,10 @@
 
 # .vscode
 .vscode/
+
+# cmake
+/build
+
+# test
+/testpy
+test.ipynb
