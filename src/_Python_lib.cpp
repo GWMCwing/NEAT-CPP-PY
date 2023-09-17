@@ -16,20 +16,28 @@ int add(int i, int j) {
   return i + j;
 }
 
-PYBIND11_MODULE(neatcpy, m) {
+PYBIND11_MODULE(_neatcpy, m) {
   m.doc() = "NEATCPP Python Bindings";
 
   m.def("add", &add, "A function which adds two numbers");
 
-  py::class_ <NEAT::MutationConfig<double>>(m, "MutationConfig")
-    .def(py::init<double, double, double, double, double, double>(),
-      py::arg("nodeMutationChance") = 0.03,
-      py::arg("edgeMutationChance") = 0.05,
-      py::arg("toggleEdgeMutationChance") = 0.05,
-      py::arg("weightMutationChance") = 0.8,
-      py::arg("activationMutationChance") = 0.1,
-      py::arg("biasMutationChance") = 0.1
-    )
+  auto pyMutationConfig = py::class_ <NEAT::MutationConfig<double>>(m, "MutationConfig");
+  auto pySpeciesConfig = py::class_ <NEAT::SpeciesConfig<double>>(m, "SpeciesConfig");
+  auto pyPopulation = py::class_<NEAT::Population<double, int>>(m, "Population");
+  auto pyGenome = py::class_<NEAT::Genome<double, int>>(m, "Genome");
+  auto pyEdge = py::class_<NEAT::Edge<double, int>>(m, "Edge");
+  auto pyNode = py::class_<NEAT::Node<double, int>>(m, "Node");
+  auto pyGeneHistory = py::class_<NEAT::GeneHistory<double, int>>(m, "GeneHistory");
+
+
+  pyMutationConfig.def(py::init<double, double, double, double, double, double>(),
+    py::arg("nodeMutationChance") = 0.03,
+    py::arg("edgeMutationChance") = 0.05,
+    py::arg("toggleEdgeMutationChance") = 0.05,
+    py::arg("weightMutationChance") = 0.8,
+    py::arg("activationMutationChance") = 0.1,
+    py::arg("biasMutationChance") = 0.1
+  )
     .def_readwrite("nodeMutationChance", &NEAT::MutationConfig<double>::mutateAddNodeProbability)
     .def_readwrite("edgeMutationChance", &NEAT::MutationConfig<double>::mutateAddEdgeProbability)
     .def_readwrite("toggleEdgeMutationChance", &NEAT::MutationConfig<double>::mutateToggleEdgeProbability)
@@ -37,21 +45,19 @@ PYBIND11_MODULE(neatcpy, m) {
     .def_readwrite("activationMutationChance", &NEAT::MutationConfig<double>::mutateActivationFunctionProbability)
     .def_readwrite("biasMutationChance", &NEAT::MutationConfig<double>::mutateBiasProbability);
 
-  py::class_ <NEAT::SpeciesConfig<double>>(m, "SpeciesConfig")
-    .def(py::init<double, double, double, double>(),
-      py::arg("c1") = 1,
-      py::arg("c2") = 1,
-      py::arg("c3") = 0.4,
-      py::arg("threshold") = 3
-    )
+  pySpeciesConfig.def(py::init<double, double, double, double>(),
+    py::arg("c1") = 1,
+    py::arg("c2") = 1,
+    py::arg("c3") = 0.4,
+    py::arg("threshold") = 3
+  )
     .def_readwrite("c1", &NEAT::SpeciesConfig<double>::c1)
     .def_readwrite("c2", &NEAT::SpeciesConfig<double>::c2)
     .def_readwrite("c3", &NEAT::SpeciesConfig<double>::c3)
     .def_readwrite("threshold", &NEAT::SpeciesConfig<double>::threshold);
   // 
 
-  py::class_<NEAT::Population<double, int>>(m, "Population")
-    .def(py::init<int, int, int, NEAT::MutationConfig<double>, NEAT::SpeciesConfig<double>>())
+  pyPopulation.def(py::init<int, int, int, NEAT::MutationConfig<double>, NEAT::SpeciesConfig<double>>())
     .def("startNextGeneration",
       py::overload_cast<>(&NEAT::Population<double, int>::startNextGeneration), py::return_value_policy::reference_internal
     )
@@ -86,8 +92,7 @@ PYBIND11_MODULE(neatcpy, m) {
     .def("print", &NEAT::Population<double, int>::print, py::arg("tabSize") = 0);
   // 
   // 
-  py::class_<NEAT::Genome<double, int>>(m, "Genome")
-    .def(py::init<int, int, bool>(), py::arg("inputSize"), py::arg("outputSize"), py::arg("init") = true)
+  pyGenome.def(py::init<int, int, bool>(), py::arg("inputSize"), py::arg("outputSize"), py::arg("init") = true)
     .def("getInputSize", &NEAT::Genome<double, int>::getInputSize, py::return_value_policy::reference_internal)
     .def("getOutputSize", &NEAT::Genome<double, int>::getOutputSize, py::return_value_policy::reference_internal)
     // 

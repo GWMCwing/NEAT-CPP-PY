@@ -44,8 +44,5 @@ test.ipynb
 # local readme
 *.local.md
 
-# stubs
-stubs
-
 # egg-info
 *.egg-info
