@@ -129,10 +129,8 @@ PYBIND11_MODULE(_neatcpy, m) {
       py::arg("geneHistory"),
       py::arg("mutationConfig") = NEAT::MutationConfig<double>()
     )
-    .def("feedForward", &NEAT::Genome<double, int>::feedForward,
-      py::arg("inputs"),
-      py::arg("outputs"),
-      py::return_value_policy::reference
+    .def("feedForward", py::overload_cast<const std::vector<double>&>(&NEAT::Genome<double, int>::feedForward),
+      py::arg("inputs")
     )
     .def("predict", &NEAT::Genome<double, int>::predict,
       py::arg("inputs")

@@ -170,7 +170,8 @@ namespace NEAT {
          * @param inputs input vector
          * @param outputs output vector
          */
-        std::vector<dType> feedForward(const std::vector<dType>& inputs, std::vector<dType>& outputs);
+        void feedForward(const std::vector<dType>& inputs, std::vector<dType>& outputs);
+        std::vector<dType> feedForward(const std::vector<dType>& inputs);
 
         /**
          * @brief get the prediction from the genome

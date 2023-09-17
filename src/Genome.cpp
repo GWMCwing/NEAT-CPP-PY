@@ -181,7 +181,7 @@ namespace NEAT {
     }
 
     template <typename dType, typename T2>
-    std::vector<dType> Genome<dType, T2>::feedForward(const std::vector<dType>& inputs, std::vector<dType>& outputs) {
+    void Genome<dType, T2>::feedForward(const std::vector<dType>& inputs, std::vector<dType>& outputs) {
         std::vector<Node<dType, T2>*> allNodes;
 
         if (static_cast<T2>(inputs.size()) != inputSize) {
@@ -215,6 +215,12 @@ namespace NEAT {
             Node<dType, T2>* node = nodes.at(i);
             outputs.push_back(node->getValue());
         }
+    }
+
+    template <typename dType, typename T2>
+    std::vector<dType> Genome<dType, T2>::feedForward(const std::vector<dType>& inputs) {
+        std::vector<dType> outputs {};
+        feedForward(inputs, outputs);
         return outputs;
     }
 
