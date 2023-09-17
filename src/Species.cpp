@@ -87,13 +87,15 @@ namespace NEAT {
         }
         T2 maxIdTarget = genome2->getMaxInnovationNumber();
         EdgeDifference<dType, T2> edgeDifference;
-        for (const std::pair<T2, Edge<dType, T2>*>& edgePair : genome1->getEdges()) {
+        const std::map<T2, NEAT::Edge<dType, T2>*>& genome1Edge = genome1->getEdges();
+        const std::map<T2, NEAT::Edge<dType, T2>*>& genome2Edge = genome2->getEdges();
+        for (const std::pair<const T2, Edge<dType, T2>*>& edgePair1 : genome1Edge) {
             bool foundMatching = false;
-            const Edge<dType, T2>* edge1 = edgePair.second;
+            const Edge<dType, T2>* edge1 = edgePair1.second;
             if (edge1 == nullptr) {
                 std::cout << "edge1 is null" << std::endl;
             }
-            for (const std::pair<T2, Edge<dType, T2>*>& edgePair2 : genome2->getEdges()) {
+            for (const std::pair<const T2, Edge<dType, T2>*>& edgePair2 : genome2Edge) {
                 const Edge<dType, T2>* edge2 = edgePair2.second;
                 if (edge2 == nullptr) {
                     std::cout << "edge2 is null" << std::endl;
@@ -300,6 +302,15 @@ namespace NEAT {
             }
         }
         return this->genomes.front();
+    }
+
+    template <typename dType, typename T2>
+    void Species<dType, T2>::print(int tabSize) const {
+        coutTab(tabSize);
+        std::cout << "Species: " << std::endl;
+        for (int i = 0; i < genomes.size();i++) {
+            genomes[i]->print(tabSize + 1);
+        }
     }
 
     // Explicit instantiation

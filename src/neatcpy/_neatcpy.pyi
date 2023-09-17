@@ -7,7 +7,8 @@ __all__ = ['Edge', 'GeneHistory', 'Genome', 'MutationConfig', 'Node', 'Populatio
 class Edge:
     pass
 class GeneHistory:
-    pass
+    def __init__(self) -> None:
+        ...
 class Genome:
     def __init__(self, inputSize: int, outputSize: int, init: bool = ...) -> None:
         ...
@@ -65,7 +66,7 @@ class MutationConfig:
 class Node:
     pass
 class Population:
-    def __init__(self, arg0: int, arg1: int, arg2: int, arg3: MutationConfig, arg4: SpeciesConfig) -> None:
+    def __init__(self, inputSize: int, outputSize: int, populationSize: int, mutationConfig: MutationConfig, speciesConfig: SpeciesConfig) -> None:
         ...
     def getAverageFitnessHistory(self) -> list[float]:
         ...

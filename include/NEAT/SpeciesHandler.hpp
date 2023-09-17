@@ -60,6 +60,7 @@ namespace NEAT {
          * @return dType average fitness
          */
         dType getAverageFitnessSum() const;
+        void print(int tabSize) const;
 
     private:
         // 

@@ -91,19 +91,18 @@ namespace NEAT {
         }
         // reproduce
         const dType averageFitness = this->getAverageFitnessSum();
-        for (Species<dType, T2>* s : species) {
-            T2 numberToReproduce = static_cast<T2>(s->getAverageFitness() / averageFitness * n);
+        const int speciesSize = species.size();
+        int produced = 0;
+        for (int i = 0; i < speciesSize; i++) {
+            Species<dType, T2>* s = species[i];
+            T2 numberToReproduce = static_cast<T2>(s->getAverageFitness() / (averageFitness * n + 0.00000000001));
+            if (speciesSize == i + 1) {
+                numberToReproduce = n - produced;
+            }
             std::vector<Genome<dType, T2>*> tempGeneration = s->generateNextGeneration(geneHistory, numberToReproduce, mutationConfig);
             nextGeneration.insert(nextGeneration.end(), tempGeneration.begin(), tempGeneration.end());
+            produced += numberToReproduce;
         }
-        // sort
-        // std::sort(nextGeneration.begin(), nextGeneration.end(), [](const Genome<dType, T2>* a, const Genome<dType, T2>* b) {
-        //     return a->getFitness() > b->getFitness();
-        //     });
-        // keep only n best
-        // if (static_cast<T2>(nextGeneration.size()) > n) {
-        //     nextGeneration.erase(nextGeneration.begin() + n, nextGeneration.end());
-        // }
         return nextGeneration;
     }
 
@@ -114,6 +113,16 @@ namespace NEAT {
             sum += s->getAverageFitness();
         }
         return sum;
+    }
+
+
+    template <typename dType, typename T2>
+    void SpeciesHandler<dType, T2>::print(int tabSize) const {
+        coutTab(tabSize);
+        std::cout << "SpeciesHandler: " << std::endl;
+        for (int i = 0; i < species.size(); i++) {
+            species[i]->print(tabSize + 1);
+        }
     }
 
     // Explicit instantiation

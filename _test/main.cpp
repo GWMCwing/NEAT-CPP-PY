@@ -15,7 +15,7 @@
 // forward declaration
 void testForGenome();
 void crossOverTest();
-void populationTest();
+void populationTest(int);
 template <typename dType, typename T2>
 void forceSkipGeneration(NEAT::TestHandler<dType, T2>* testHandler, NEAT::Population<dType, T2>* population, int n);
 template <typename dType, typename T2>
@@ -24,6 +24,8 @@ template <typename dType, typename T2>
 void EnvTest_XOR(NEAT::TestHandler<dType, T2>* testHandler, NEAT::Population<dType, T2>* population, int n);
 
 int main() {
+    populationTest(2);
+    return 0;
     NEAT::ActivationFunction_Factory<>* AfFactory = NEAT::getActivationFunction_Factory<>();
     const int inputSize = 2;
     const int outputSize = 1;
@@ -133,10 +135,10 @@ void forceSkipGeneration(NEAT::TestHandler<dType, T2>* testHandler, NEAT::Popula
     std::cout << "Generation " << population->getGeneration() << " Done." << std::endl;
 };
 
-void populationTest() {
+void populationTest(int n = 100) {
     const int inputSize = 2;
     const int outputSize = 1;
-    const int populationSize = 100;
+    const int populationSize = 1;
     const NEAT::MutationConfig<double> mutationConfig = {
         0.8, // mutateAddNodeProbability
         0.2, // mutateAddEdgeProbability
@@ -154,7 +156,7 @@ void populationTest() {
     };
     NEAT::TestHandler<double, int>* testHandler = new NEAT::TestHandler(inputSize, outputSize, speciesConfig, mutationConfig);
     NEAT::Population<double, int>* population = new NEAT::Population<double, int>(inputSize, outputSize, populationSize, mutationConfig, speciesConfig);
-    forceSkipGeneration<double, int>(testHandler, population, 100);
+    forceSkipGeneration<double, int>(testHandler, population, n);
     // population->print();
 
     delete population;

@@ -142,6 +142,8 @@ namespace NEAT {
          */
         dType getAverageFitness() const;
 
+        void print(int tabSize) const;
+
     private:
 
         const Genome<dType, T2>* getRandomGenome() const;

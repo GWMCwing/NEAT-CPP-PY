@@ -57,34 +57,41 @@ PYBIND11_MODULE(_neatcpy, m) {
     .def_readwrite("threshold", &NEAT::SpeciesConfig<double>::threshold);
   // 
 
-  pyPopulation.def(py::init<int, int, int, NEAT::MutationConfig<double>, NEAT::SpeciesConfig<double>>())
+  pyPopulation.def(
+    py::init<int, int, int, NEAT::MutationConfig<double>, NEAT::SpeciesConfig<double>>(),
+    py::arg("inputSize"),
+    py::arg("outputSize"),
+    py::arg("populationSize"),
+    py::arg("mutationConfig"),
+    py::arg("speciesConfig")
+  )
     .def("startNextGeneration",
-      py::overload_cast<>(&NEAT::Population<double, int>::startNextGeneration), py::return_value_policy::reference_internal
+      py::overload_cast<>(&NEAT::Population<double, int>::startNextGeneration), py::return_value_policy::reference
     )
     .def("startNextGeneration",
-      py::overload_cast<int>(&NEAT::Population<double, int>::startNextGeneration), py::arg("populationSize"), py::return_value_policy::reference_internal
+      py::overload_cast<int>(&NEAT::Population<double, int>::startNextGeneration), py::arg("populationSize"), py::return_value_policy::reference
     )
     .def("startNextGeneration",
-      py::overload_cast<std::vector<double>>(&NEAT::Population<double, int>::startNextGeneration), py::arg("fitnesses"), py::return_value_policy::reference_internal
+      py::overload_cast<std::vector<double>>(&NEAT::Population<double, int>::startNextGeneration), py::arg("fitnesses"), py::return_value_policy::reference
     )
     .def("startNextGeneration",
-      py::overload_cast<int, std::vector<double>>(&NEAT::Population<double, int>::startNextGeneration), py::arg("populationSize"), py::arg("fitnesses"), py::return_value_policy::reference_internal
+      py::overload_cast<int, std::vector<double>>(&NEAT::Population<double, int>::startNextGeneration), py::arg("populationSize"), py::arg("fitnesses"), py::return_value_policy::reference
     )
     // 
-    .def("getGenomes", &NEAT::Population<double, int>::getGenomes, py::return_value_policy::reference_internal)
-    .def("getGenome", &NEAT::Population<double, int>::getGenome, py::arg("index"), py::return_value_policy::reference_internal)
+    .def("getGenomes", &NEAT::Population<double, int>::getGenomes, py::return_value_policy::reference)
+    .def("getGenome", &NEAT::Population<double, int>::getGenome, py::arg("index"), py::return_value_policy::reference)
     // 
-    .def("getPopulationSize", &NEAT::Population<double, int>::getPopulationSize, py::return_value_policy::reference_internal)
-    .def("getInputSize", &NEAT::Population<double, int>::getInputSize, py::return_value_policy::reference_internal)
-    .def("getOutputSize", &NEAT::Population<double, int>::getOutputSize, py::return_value_policy::reference_internal)
-    .def("getGeneration", &NEAT::Population<double, int>::getGeneration, py::return_value_policy::reference_internal)
-    .def("getMutationConfig", &NEAT::Population<double, int>::getMutationConfig, py::return_value_policy::reference_internal)
-    .def("getSpeciesConfig", &NEAT::Population<double, int>::getSpeciesConfig, py::return_value_policy::reference_internal)
+    .def("getPopulationSize", &NEAT::Population<double, int>::getPopulationSize, py::return_value_policy::reference)
+    .def("getInputSize", &NEAT::Population<double, int>::getInputSize, py::return_value_policy::reference)
+    .def("getOutputSize", &NEAT::Population<double, int>::getOutputSize, py::return_value_policy::reference)
+    .def("getGeneration", &NEAT::Population<double, int>::getGeneration, py::return_value_policy::reference)
+    .def("getMutationConfig", &NEAT::Population<double, int>::getMutationConfig, py::return_value_policy::reference)
+    .def("getSpeciesConfig", &NEAT::Population<double, int>::getSpeciesConfig, py::return_value_policy::reference)
     // 
-    .def("getBestFitnessHistory", &NEAT::Population<double, int>::getBestFitnessHistory, py::return_value_policy::reference_internal)
-    .def("getAverageFitnessHistory", &NEAT::Population<double, int>::getAverageFitnessHistory, py::return_value_policy::reference_internal)
-    .def("getWorstFitnessHistory", &NEAT::Population<double, int>::getWorstFitnessHistory, py::return_value_policy::reference_internal)
-    .def("getBestGenomeHistory", &NEAT::Population<double, int>::getBestGenomeHistory, py::return_value_policy::reference_internal)
+    .def("getBestFitnessHistory", &NEAT::Population<double, int>::getBestFitnessHistory, py::return_value_policy::reference)
+    .def("getAverageFitnessHistory", &NEAT::Population<double, int>::getAverageFitnessHistory, py::return_value_policy::reference)
+    .def("getWorstFitnessHistory", &NEAT::Population<double, int>::getWorstFitnessHistory, py::return_value_policy::reference)
+    .def("getBestGenomeHistory", &NEAT::Population<double, int>::getBestGenomeHistory, py::return_value_policy::reference)
     // 
     .def("setMutationConfig", &NEAT::Population<double, int>::setMutationConfig, py::arg("mutationConfig"))
     .def("setSpeciesConfig", &NEAT::Population<double, int>::setSpeciesConfig, py::arg("speciesConfig"))
@@ -93,25 +100,25 @@ PYBIND11_MODULE(_neatcpy, m) {
   // 
   // 
   pyGenome.def(py::init<int, int, bool>(), py::arg("inputSize"), py::arg("outputSize"), py::arg("init") = true)
-    .def("getInputSize", &NEAT::Genome<double, int>::getInputSize, py::return_value_policy::reference_internal)
-    .def("getOutputSize", &NEAT::Genome<double, int>::getOutputSize, py::return_value_policy::reference_internal)
+    .def("getInputSize", &NEAT::Genome<double, int>::getInputSize, py::return_value_policy::reference)
+    .def("getOutputSize", &NEAT::Genome<double, int>::getOutputSize, py::return_value_policy::reference)
     // 
-    .def("getNodes", &NEAT::Genome<double, int>::getNodes, py::return_value_policy::reference_internal)
-    .def("getEdges", &NEAT::Genome<double, int>::getEdges, py::return_value_policy::reference_internal)
+    .def("getNodes", &NEAT::Genome<double, int>::getNodes, py::return_value_policy::reference)
+    .def("getEdges", &NEAT::Genome<double, int>::getEdges, py::return_value_policy::reference)
     .def("getEdge", &NEAT::Genome<double, int>::getEdge,
       py::arg("innovationNumber"),
-      py::return_value_policy::reference_internal)
+      py::return_value_policy::reference)
     .def("getNode", &NEAT::Genome<double, int>::getNode,
       py::arg("id"),
-      py::return_value_policy::reference_internal)
+      py::return_value_policy::reference)
     // 
     .def("addCloneEdge", &NEAT::Genome<double, int>::addCloneEdge,
       py::arg("edge"),
-      py::return_value_policy::reference_internal)
+      py::return_value_policy::reference)
     .def("addCloneNode", &NEAT::Genome<double, int>::addCloneNode,
-      py::arg("node"), py::return_value_policy::reference_internal)
+      py::arg("node"), py::return_value_policy::reference)
     .def("addNode_noClone", &NEAT::Genome<double, int>::addNode_noClone,
-      py::arg("node"), py::return_value_policy::reference_internal)
+      py::arg("node"), py::return_value_policy::reference)
     .def("disableEdge", &NEAT::Genome<double, int>::disableEdge,
       py::arg("innovationNumber"))
     .def("enableEdge", &NEAT::Genome<double, int>::enableEdge,
@@ -123,7 +130,7 @@ PYBIND11_MODULE(_neatcpy, m) {
     .def("getNumberOfGenes", &NEAT::Genome<double, int>::getNumberOfGenes)
     // 
     .def("setFitness", &NEAT::Genome<double, int>::setFitness, py::arg("fitness"))
-    .def("getFitness", &NEAT::Genome<double, int>::getFitness, py::return_value_policy::reference_internal)
+    .def("getFitness", &NEAT::Genome<double, int>::getFitness, py::return_value_policy::reference)
     // 
     .def("mutate", &NEAT::Genome<double, int>::mutate,
       py::arg("geneHistory"),
@@ -137,4 +144,6 @@ PYBIND11_MODULE(_neatcpy, m) {
     )
     .def("clone", &NEAT::Genome<double, int>::clone)
     .def("print", &NEAT::Genome<double, int>::print, py::arg("tabSize") = 0);
+  // 
+  pyGeneHistory.def(py::init<>());
 }

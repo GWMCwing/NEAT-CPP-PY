@@ -49,7 +49,7 @@ namespace NEAT {
         void setMutationConfig(MutationConfig<dType> mutationConfig);
         void setSpeciesConfig(SpeciesConfig<dType> speciesConfig);
 
-        void print(int tabSize = 0) const;
+        void print(int tabSize) const;
 
     private:
         std::vector<Genome<dType, T2>*> genomes;

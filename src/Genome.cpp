@@ -68,28 +68,18 @@ namespace NEAT {
 
     template <typename dType, typename T2>
     Edge<dType, T2>* Genome<dType, T2>::getEdge(T2 innovationNumber) const {
-        Edge<dType, T2>* edge;
-        try {
-            edge = edges.at(innovationNumber);
-        }
-        catch (const std::out_of_range& oor) {
-            // std::cerr << "Edge Access Out of Range error: " << oor.what() << '\n';
+        if (edges.count(innovationNumber) == 0) {
             return nullptr;
         }
-        return edge;
+        return edges.at(innovationNumber);
     }
 
     template <typename dType, typename T2>
     Node<dType, T2>* Genome<dType, T2>::getNode(T2 id) const {
-        Node<dType, T2>* node;
-        try {
-            node = nodes.at(id);
-        }
-        catch (const std::out_of_range& oor) {
-            // std::cerr << "Node Access Out of Range error: " << oor.what() << '\n';
+        if (nodes.count(id) == 0) {
             return nullptr;
         }
-        return node;
+        return nodes.at(id);
     }
 
     template <typename dType, typename T2>
@@ -240,9 +230,12 @@ namespace NEAT {
     template <typename dType, typename T2>
     Genome<dType, T2>* Genome<dType, T2>::clone() const {
         // TODO: Check all clone mem leak or ref leak
+        std::cout << "new Genome" << std::endl;
         Genome<dType, T2>* newGenome = new Genome<dType, T2>(inputSize, outputSize, false);
+        std::cout << "set fitness" << std::endl;
         newGenome->setFitness(fitness);
-        for (std::pair<const T2, Edge<dType, T2>*> edgePair : edges) {
+        std::cout << "clone edge" << std::endl;
+        for (std::pair<T2, Edge<dType, T2>*> edgePair : edges) {
             Edge<dType, T2>* edge = edgePair.second;
             // std::cout << "edge: " << edge->getInnovationNumber() << std::endl;
             newGenome->addCloneEdge(edge);
@@ -251,6 +244,7 @@ namespace NEAT {
             //     delete cloneEdge;
             // }
         }
+        std::cout << "build node from edge" << std::endl;
         // build node from edges
         for (std::pair<const T2, Edge<dType, T2>*> edgePair : edges) {
             const Edge<dType, T2>* originalEdge = edgePair.second;
@@ -288,6 +282,7 @@ namespace NEAT {
                 toNode->addIncomingEdge(newEdge);
             }
         }
+        std::cout << "end clone genome" << std::endl;
         return newGenome;
     }
 
