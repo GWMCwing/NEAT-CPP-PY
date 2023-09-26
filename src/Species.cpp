@@ -192,6 +192,8 @@ namespace NEAT {
             // std::cout << "Generating genome " << i << " of " << n << std::endl;
             if (uniformDistribution<dType>(0, 1) < 0.25 || genomes.size() == 1) { // 25% chance to get the same genome instead of getting one from crossover
                 newGenome = this->getRandomGenome()->clone();
+            } else if (genomes.size() == 2) {
+                newGenome = this->crossover(genomes[0], genomes[1]);
             } else {
                 const Genome<dType, T2>* genome1, * genome2;
                 genome1 = this->getRandomGenome();

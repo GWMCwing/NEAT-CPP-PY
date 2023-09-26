@@ -98,6 +98,7 @@ namespace NEAT {
             T2 numberToReproduce = static_cast<T2>(s->getAverageFitness() / (averageFitness * n + 0.00000000001));
             if (speciesSize == i + 1) {
                 numberToReproduce = n - produced;
+                numberToReproduce = numberToReproduce < 0 ? 0 : numberToReproduce;
             }
             std::vector<Genome<dType, T2>*> tempGeneration = s->generateNextGeneration(geneHistory, numberToReproduce, mutationConfig);
             nextGeneration.insert(nextGeneration.end(), tempGeneration.begin(), tempGeneration.end());
