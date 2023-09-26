@@ -8,6 +8,7 @@
 #include "../include/NEAT/Genome.hpp"
 #include "../include/NEAT/Population.hpp"
 #include "../include/NEAT/SpeciesHandler.hpp"
+#include "../include/NEAT/Helper.hpp"
 // 
 
 namespace py = pybind11;
@@ -21,6 +22,7 @@ PYBIND11_MODULE(_neatcpy, m) {
 
   m.def("add", &add, "A function which adds two numbers");
 
+  auto pyRandomGen = py::class_ <NEAT::Seed>(m, "Seed");
   auto pyMutationConfig = py::class_ <NEAT::MutationConfig<double>>(m, "MutationConfig");
   auto pySpeciesConfig = py::class_ <NEAT::SpeciesConfig<double>>(m, "SpeciesConfig");
   auto pyPopulation = py::class_<NEAT::Population<double, int>>(m, "Population");
@@ -28,8 +30,15 @@ PYBIND11_MODULE(_neatcpy, m) {
   auto pyEdge = py::class_<NEAT::Edge<double, int>>(m, "Edge");
   auto pyNode = py::class_<NEAT::Node<double, int>>(m, "Node");
   auto pyGeneHistory = py::class_<NEAT::GeneHistory<double, int>>(m, "GeneHistory");
+  // 
 
+  m.def("gaussianDistribution", &NEAT::gaussianDistribution<double>, py::arg("mean"), py::arg("stdDeviation"));
 
+  pyRandomGen
+    .def(py::init<>())
+    .def_static("getSeed", &NEAT::Seed::getSeed)
+    .def_static("setSeed", &NEAT::Seed::setSeed, py::arg("newSeed") = -1);
+  // 
   pyMutationConfig.def(py::init<double, double, double, double, double, double>(),
     py::arg("nodeMutationChance") = 0.03,
     py::arg("edgeMutationChance") = 0.05,
