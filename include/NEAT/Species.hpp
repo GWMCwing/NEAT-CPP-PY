@@ -146,7 +146,7 @@ namespace NEAT {
 
     private:
 
-        const Genome<dType, T2>* getRandomGenome() const;
+        const Genome<dType, T2>* getRandomGenome(const std::vector<Genome<dType, T2>*>* genomes = nullptr) const;
 
         /**
          * @brief Genomes in the species

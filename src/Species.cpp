@@ -171,7 +171,7 @@ namespace NEAT {
         for (Genome<dType, T2>* genome : this->genomes) {
             genome->setFitness(genome->getFitness() / N);
         }
-        totalFitness /= N;
+        // totalFitness /= N;
     }
 
     template <typename dType, typename T2>
@@ -185,22 +185,30 @@ namespace NEAT {
     template <typename dType, typename T2>
     std::vector<Genome<dType, T2>*> Species<dType, T2>::generateNextGeneration(GeneHistory<dType, T2>& geneHistory, T2 n, const MutationConfig<dType>& mutationConfig) {
         std::vector<Genome<dType, T2>*> nextGeneration;
+        if (n == 1 || genomes.size() == 1) {
+            nextGeneration.push_back(this->getRandomGenome()->clone());
+            return nextGeneration;
+        }
+        if (n == 2 || genomes.size() == 2) {
+            nextGeneration.push_back(this->getRandomGenome()->clone());
+            nextGeneration.push_back(this->getRandomGenome()->clone());
+            return nextGeneration;
+        }
         nextGeneration.reserve(n);
         sortGenomes();
         for (T2 i = 0; i < n; i++) {
+            std::vector<Genome<dType, T2>*> genomeList = this->genomes;
             Genome<dType, T2>* newGenome = nullptr;
+            // TODO: break out of inf loop selecting the same genome
+            // TODO: vector of genome pointer to prevent while true loop
             // std::cout << "Generating genome " << i << " of " << n << std::endl;
-            if (uniformDistribution<dType>(0, 1) < 0.25 || genomes.size() == 1) { // 25% chance to get the same genome instead of getting one from crossover
+            if (uniformDistribution<dType>(0, 1) < 0.25) { // 25% chance to get the same genome instead of getting one from crossover
                 newGenome = this->getRandomGenome()->clone();
-            } else if (genomes.size() == 2) {
-                newGenome = this->crossover(genomes[0], genomes[1]);
             } else {
                 const Genome<dType, T2>* genome1, * genome2;
                 genome1 = this->getRandomGenome();
-                while (true) {
-                    genome2 = this->getRandomGenome();
-                    if (genome1 != genome2) break;
-                }
+                genomeList.erase(std::find(genomeList.begin(), genomeList.end(), genome1));
+                genome2 = this->getRandomGenome(&genomeList);
                 newGenome = this->crossover(genome1, genome2);
             }
             newGenome->mutate(geneHistory, mutationConfig);
@@ -294,16 +302,17 @@ namespace NEAT {
     }
 
     template <typename dType, typename T2>
-    const Genome<dType, T2>* Species<dType, T2>::getRandomGenome() const {
-        dType randomFitness = std::abs(gaussianDistribution<dType>(0, 1) * totalFitness);
+    const Genome<dType, T2>* Species<dType, T2>::getRandomGenome(const std::vector<Genome<dType, T2>*>* genomes) const {
+        if (genomes == nullptr) genomes = &(this->genomes);
+        dType randomFitness = (uniformDistribution<dType>(0, 1) * totalFitness);
         dType currentFitness = 0;
-        for (Genome<dType, T2>* genome : this->genomes) {
+        for (Genome<dType, T2>* genome : *genomes) {
             currentFitness += genome->getFitness();
             if (currentFitness >= randomFitness) {
                 return genome;
             }
         }
-        return this->genomes.front();
+        return genomes->front();
     }
 
     template <typename dType, typename T2>
