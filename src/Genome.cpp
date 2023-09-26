@@ -13,9 +13,10 @@ namespace NEAT {
     template <typename dType, typename T2>
     Genome<dType, T2>::Genome(T2 inputSize, T2 outputSize, bool init) :inputSize(inputSize), outputSize(outputSize) {
         if (!init) return;
+        // TODO: allow default activation function as parameter for both input and output nodes
         // 1. create input nodes
         for (T2 i = 0; i < inputSize; i++) {
-            Node<dType, T2>* node = new Node<dType, T2>(i, NodeType::INPUT, 0, 0, getActivationFunction_Factory<dType>()->identity);
+            Node<dType, T2>* node = new Node<dType, T2>(i, NodeType::INPUT, 0, 0, getActivationFunction_Factory<dType>()->sigmoid);
             addNode(node);
         }
         // 2. create output nodes
@@ -28,7 +29,7 @@ namespace NEAT {
             for (T2 j = 0; j < outputSize; j++) {
                 Node<dType, T2>* fromNode = nodes[i];
                 Node<dType, T2>* toNode = nodes[j + inputSize];
-                Edge<dType, T2>* edge = new Edge<dType, T2>(fromNode, toNode, gaussianDistribution<dType>(0, 1), i * outputSize + j);
+                Edge<dType, T2>* edge = new Edge<dType, T2>(fromNode, toNode, uniformDistribution<dType>(-1, 1), i * outputSize + j);
                 addEdge(edge);
                 fromNode->addOutgoingEdge(edge);
                 toNode->addIncomingEdge(edge);
