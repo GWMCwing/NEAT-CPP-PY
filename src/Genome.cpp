@@ -230,21 +230,12 @@ namespace NEAT {
     template <typename dType, typename T2>
     Genome<dType, T2>* Genome<dType, T2>::clone() const {
         // TODO: Check all clone mem leak or ref leak
-        std::cout << "new Genome" << std::endl;
         Genome<dType, T2>* newGenome = new Genome<dType, T2>(inputSize, outputSize, false);
-        std::cout << "set fitness" << std::endl;
         newGenome->setFitness(fitness);
-        std::cout << "clone edge" << std::endl;
         for (std::pair<T2, Edge<dType, T2>*> edgePair : edges) {
             Edge<dType, T2>* edge = edgePair.second;
-            // std::cout << "edge: " << edge->getInnovationNumber() << std::endl;
             newGenome->addCloneEdge(edge);
-            // Edge<dType, T2>* cloneEdge = edge->clone();
-            // if (newGenome->addEdge(cloneEdge) == false) {
-            //     delete cloneEdge;
-            // }
         }
-        std::cout << "build node from edge" << std::endl;
         // build node from edges
         for (std::pair<const T2, Edge<dType, T2>*> edgePair : edges) {
             const Edge<dType, T2>* originalEdge = edgePair.second;
@@ -282,7 +273,6 @@ namespace NEAT {
                 toNode->addIncomingEdge(newEdge);
             }
         }
-        std::cout << "end clone genome" << std::endl;
         return newGenome;
     }
 
