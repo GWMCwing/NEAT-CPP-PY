@@ -56,18 +56,19 @@ namespace NEAT {
         const Genome<dType, T2>* bestGenome = genomes[0];
         dType bestFitness = genomes[0]->getFitness();
         dType worstFitness = genomes[0]->getFitness();
-        dType averageFitness = 0;
+        dType fitnessSum = 0;
         for (Genome<dType, T2>* genome : genomes) {
-            if (genome->getFitness() > bestFitness) {
-                bestFitness = genome->getFitness();
+            dType fitness = genome->getFitness();
+            if (fitness > bestFitness) {
+                bestFitness = fitness;
                 bestGenome = genome;
             }
-            if (genome->getFitness() < worstFitness) {
-                worstFitness = genome->getFitness();
+            if (fitness < worstFitness) {
+                worstFitness = fitness;
             }
-            averageFitness += genome->getFitness();
+            fitnessSum += fitness;
         }
-        averageFitness /= genomes.size();
+        dType averageFitness = fitnessSum / genomes.size();
         // clone best genome
         Genome<dType, T2>* bestGenomeClone = bestGenome->clone();
         // push back
