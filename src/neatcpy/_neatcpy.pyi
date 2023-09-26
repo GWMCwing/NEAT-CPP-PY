@@ -3,7 +3,7 @@ NEATCPP Python Bindings
 """
 from __future__ import annotations
 import typing
-__all__ = ['Edge', 'GeneHistory', 'Genome', 'MutationConfig', 'Node', 'Population', 'SpeciesConfig', 'add']
+__all__ = ['Edge', 'GeneHistory', 'Genome', 'MutationConfig', 'Node', 'Population', 'SpeciesConfig', 'add', 'gaussianDistribution', 'getSeed', 'setSeed']
 class Edge:
     pass
 class GeneHistory:
@@ -121,3 +121,9 @@ def add(arg0: int, arg1: int) -> int:
     """
     A function which adds two numbers
     """
+def gaussianDistribution(mean: float, stdDeviation: float) -> float:
+    ...
+def getSeed() -> int:
+    ...
+def setSeed(seed: int = ...) -> None:
+    ...

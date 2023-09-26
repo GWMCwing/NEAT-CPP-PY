@@ -8,6 +8,10 @@ from ._neatcpy import (
     Population,
     SpeciesConfig,
     add,
+    gaussianDistribution,
+    getSeed,
+    setSeed
+    
 )
 
 __all__: list = [
@@ -19,4 +23,7 @@ __all__: list = [
     "Population",
     "SpeciesConfig",
     "add",
+    "gaussianDistribution",
+    "getSeed",
+    "setSeed"
 ]
