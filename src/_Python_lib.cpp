@@ -22,7 +22,7 @@ PYBIND11_MODULE(_neatcpy, m) {
 
   m.def("add", &add, "A function which adds two numbers");
 
-  auto pyRandomGen = py::class_ <NEAT::Seed>(m, "Seed");
+
   auto pyMutationConfig = py::class_ <NEAT::MutationConfig<double>>(m, "MutationConfig");
   auto pySpeciesConfig = py::class_ <NEAT::SpeciesConfig<double>>(m, "SpeciesConfig");
   auto pyPopulation = py::class_<NEAT::Population<double, int>>(m, "Population");
@@ -34,10 +34,8 @@ PYBIND11_MODULE(_neatcpy, m) {
 
   m.def("gaussianDistribution", &NEAT::gaussianDistribution<double>, py::arg("mean"), py::arg("stdDeviation"));
 
-  pyRandomGen
-    .def(py::init<>())
-    .def_static("getSeed", &NEAT::Seed::getSeed)
-    .def_static("setSeed", &NEAT::Seed::setSeed, py::arg("newSeed") = -1);
+  m.def("setSeed", &NEAT::setSeed, py::arg("seed") = -1);
+  m.def("getSeed", &NEAT::getSeed, py::return_value_policy::copy);
   // 
   pyMutationConfig.def(py::init<double, double, double, double, double, double>(),
     py::arg("nodeMutationChance") = 0.03,

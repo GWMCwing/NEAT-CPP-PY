@@ -20,5 +20,13 @@ namespace NEAT {
   unsigned int Seed::seed = std::random_device()();
   std::mt19937 Seed::gen(Seed::seed);
   // 
+  // 
+  void setSeed(unsigned int newSeed = -1) {
+    Seed::setSeed(newSeed);
+  }
+
+  unsigned int getSeed() {
+    return Seed::getSeed();
+  }
 
 }

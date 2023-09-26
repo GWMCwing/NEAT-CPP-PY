@@ -11,12 +11,22 @@ namespace NEAT {
 
     class Seed {
     public:
+        static std::mt19937& getGenerator();
+        static unsigned int getSeed();
+    private:
         static unsigned int seed;
         static std::mt19937 gen;
-        static unsigned int getSeed();
         static void setSeed(unsigned int newSeed);
-        static std::mt19937& getGenerator();
+        // 
+        friend void setSeed(unsigned int);
     };
+
+
+    void setSeed(unsigned int newSeed);
+
+    unsigned int getSeed();
+
+
 
     /**
      * @brief Get a random number from a gaussian distribution
