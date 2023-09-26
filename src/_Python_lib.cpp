@@ -34,7 +34,8 @@ PYBIND11_MODULE(_neatcpy, m) {
 
   m.def("gaussianDistribution", &NEAT::gaussianDistribution<double>, py::arg("mean"), py::arg("stdDeviation"));
 
-  m.def("setSeed", &NEAT::setSeed, py::arg("seed") = -1);
+  m.def("setRandomSeed", &NEAT::setRandomSeed);
+  m.def("setSeed", &NEAT::setSeed);
   m.def("getSeed", &NEAT::getSeed, py::return_value_policy::copy);
   // 
   pyMutationConfig.def(py::init<double, double, double, double, double, double>(),

@@ -19,9 +19,11 @@ namespace NEAT {
         static void setSeed(unsigned int newSeed);
         // 
         friend void setSeed(unsigned int);
+        friend void setRandomSeed();
     };
 
 
+    void setRandomSeed();
     void setSeed(unsigned int newSeed);
 
     unsigned int getSeed();

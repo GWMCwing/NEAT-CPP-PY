@@ -5,11 +5,8 @@ namespace NEAT {
   unsigned int Seed::getSeed() {
     return seed;
   }
-  void Seed::setSeed(unsigned int newSeed = -1) {
-    if (newSeed == -1)
-      seed = std::random_device()();
-    else
-      seed = newSeed;
+  void Seed::setSeed(unsigned int newSeed) {
+    seed = newSeed;
     gen.seed(seed);
   }
 
@@ -21,7 +18,10 @@ namespace NEAT {
   std::mt19937 Seed::gen(Seed::seed);
   // 
   // 
-  void setSeed(unsigned int newSeed = -1) {
+  void setRandomSeed() {
+    Seed::setSeed(std::random_device()());
+  }
+  void setSeed(unsigned int newSeed) {
     Seed::setSeed(newSeed);
   }
 
